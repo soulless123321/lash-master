@@ -105,7 +105,7 @@ app.get('/api/dates', async (req, res) => {
     try {
         const { getDB } = await getDb();
         const database = getDB();
-        const results = database.exec("SELECT date, time FROM bookings WHERE date != '' AND date IS NOT NULL AND status = 'confirmed'");
+        const results = database.exec("SELECT date, time_from, time_to FROM bookings WHERE date != '' AND date IS NOT NULL AND status = 'confirmed'");
         
         if (results.length === 0) {
             return res.json([]);
@@ -115,7 +115,8 @@ app.get('/api/dates', async (req, res) => {
             .filter(row => row[0])
             .map(row => ({
                 date: row[0],
-                time: row[1]
+                timeFrom: row[1],
+                timeTo: row[2]
             }));
         
         res.json(bookedSlots);
@@ -131,13 +132,13 @@ app.post('/api/bookings/:id/confirm', async (req, res) => {
     }
     
     try {
-        const { date, time } = req.body;
+        const { date, timeFrom, timeTo } = req.body;
         const { getDB, saveDB } = await getDb();
         const database = getDB();
         
         database.run(
-            'UPDATE bookings SET date = ?, time = ?, status = ? WHERE id = ?',
-            [date, time, 'confirmed', req.params.id]
+            'UPDATE bookings SET date = ?, time_from = ?, time_to = ?, status = ? WHERE id = ?',
+            [date, timeFrom, timeTo, 'confirmed', req.params.id]
         );
         saveDB();
         

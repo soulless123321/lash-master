@@ -665,14 +665,16 @@
                         ${booking.status === 'confirmed' ? `
                             <div class="booking-date-time">
                                 <span><i class="bi bi-calendar3"></i> ${booking.date}</span>
-                                <span><i class="bi bi-clock"></i> ${booking.time}</span>
+                                <span><i class="bi bi-clock"></i> ${booking.time_from} - ${booking.time_to}</span>
                             </div>
                         ` : `
                             <div class="booking-assign">
                                 <div class="assign-row">
                                     <input type="date" id="date-${booking.id}" class="assign-input">
-                                    <select id="time-${booking.id}" class="assign-input">
-                                        <option value="">Выберите время</option>
+                                </div>
+                                <div class="assign-row">
+                                    <select id="timeFrom-${booking.id}" class="assign-input">
+                                        <option value="">С</option>
                                         <option value="09:00">09:00</option>
                                         <option value="10:00">10:00</option>
                                         <option value="11:00">11:00</option>
@@ -684,6 +686,20 @@
                                         <option value="17:00">17:00</option>
                                         <option value="18:00">18:00</option>
                                         <option value="19:00">19:00</option>
+                                    </select>
+                                    <select id="timeTo-${booking.id}" class="assign-input">
+                                        <option value="">До</option>
+                                        <option value="10:00">10:00</option>
+                                        <option value="11:00">11:00</option>
+                                        <option value="12:00">12:00</option>
+                                        <option value="13:00">13:00</option>
+                                        <option value="14:00">14:00</option>
+                                        <option value="15:00">15:00</option>
+                                        <option value="16:00">16:00</option>
+                                        <option value="17:00">17:00</option>
+                                        <option value="18:00">18:00</option>
+                                        <option value="19:00">19:00</option>
+                                        <option value="20:00">20:00</option>
                                     </select>
                                 </div>
                                 <button class="btn btn-confirm" onclick="confirmBooking(${booking.id})">
@@ -754,10 +770,16 @@
         
         async function confirmBooking(id) {
             const date = document.getElementById('date-' + id).value;
-            const time = document.getElementById('time-' + id).value;
+            const timeFrom = document.getElementById('timeFrom-' + id).value;
+            const timeTo = document.getElementById('timeTo-' + id).value;
             
-            if (!date || !time) {
+            if (!date || !timeFrom || !timeTo) {
                 showNotification('Выберите дату и время', 'error');
+                return;
+            }
+            
+            if (timeFrom >= timeTo) {
+                showNotification('Время "до" должно быть позже времени "с"', 'error');
                 return;
             }
             
@@ -768,7 +790,7 @@
                         'Content-Type': 'application/json',
                         'Authorization': 'Bearer ' + localStorage.getItem('adminToken')
                     },
-                    body: JSON.stringify({ date, time })
+                    body: JSON.stringify({ date, timeFrom, timeTo })
                 });
                 
                 if (response.ok) {

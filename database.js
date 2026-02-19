@@ -38,6 +38,14 @@ async function initDB() {
         db.run('ALTER TABLE bookings ADD COLUMN time TEXT');
     } catch (e) {}
     
+    try {
+        db.run('ALTER TABLE bookings ADD COLUMN time_from TEXT');
+    } catch (e) {}
+    
+    try {
+        db.run('ALTER TABLE bookings ADD COLUMN time_to TEXT');
+    } catch (e) {}
+    
     saveDB();
     
     return db;

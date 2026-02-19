@@ -87,9 +87,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }, observerOptions);
 
-    document.querySelectorAll('.service-card, .portfolio-item').forEach(el => {
+    document.querySelectorAll('.service-card, .portfolio-item, .review-card, .certificate-card, .faq-item, .about-grid, .contacts-grid, .section-title').forEach(el => {
         el.style.opacity = '0';
-        el.style.transform = 'translateY(30px)';
+        el.style.transform = 'translateY(40px)';
         el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
         observer.observe(el);
     });

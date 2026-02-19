@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#d4a574"/>
+      <stop offset="100%" style="stop-color:#b8956a"/>
+    </linearGradient>
+  </defs>
+  <!-- Eye shape -->
+  <ellipse cx="50" cy="50" rx="40" ry="28" fill="white" stroke="url(#grad)" stroke-width="3"/>
+  <!-- Iris -->
+  <circle cx="50" cy="50" r="18" fill="url(#grad)"/>
+  <!-- Pupil -->
+  <circle cx="50" cy="50" r="9" fill="#1a1a1a"/>
+  <!-- Highlight -->
+  <circle cx="44" cy="44" r="4" fill="white" opacity="0.7"/>
+  <!-- Eyelashes -->
+  <g stroke="#b8956a" stroke-width="2" stroke-linecap="round">
+    <line x1="20" y1="35" x2="15" y2="25"/>
+    <line x1="30" y1="26" x2="27" y2="15"/>
+    <line x1="42" y1="22" x2="42" y2="10"/>
+    <line x1="50" y1="20" x2="50" y2="8"/>
+    <line x1="58" y1="22" x2="58" y2="10"/>
+    <line x1="70" y1="26" x2="73" y2="15"/>
+    <line x1="80" y1="35" x2="85" y2="25"/>
+  </g>
+</svg>

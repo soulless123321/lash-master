@@ -65,8 +65,23 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.faq-question').forEach(question => {
         question.addEventListener('click', () => {
             const item = question.parentElement;
-            item.classList.toggle('active');
+            const answer = item.querySelector('.faq-answer');
+            const isActive = item.classList.contains('active');
+            
+            document.querySelectorAll('.faq-item').forEach(el => {
+                el.classList.remove('active');
+                el.querySelector('.faq-answer').style.maxHeight = null;
+            });
+            
+            if (!isActive) {
+                item.classList.add('active');
+                answer.style.maxHeight = answer.scrollHeight + 'px';
+            }
         });
+    });
+    
+    document.querySelectorAll('.faq-answer').forEach(answer => {
+        answer.style.transition = 'max-height 0.4s ease, padding 0.4s ease';
     });
     
     if (localStorage.getItem('cookiesAccepted') !== 'true') {

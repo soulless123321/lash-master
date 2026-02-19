@@ -195,35 +195,35 @@ app.delete('/api/bookings/:id', async (req, res) => {
 });
 
 app.get('/login', (req, res) => {
-    res.sendFile(path.join(__dirname, 'login.html'));
+    res.sendFile(path.join(__dirname, '..', 'public', 'login.html'));
 });
 
 app.get('/login.html', (req, res) => {
-    res.sendFile(path.join(__dirname, 'login.html'));
+    res.sendFile(path.join(__dirname, '..', 'public', 'login.html'));
 });
 
 app.get('/admin', (req, res) => {
     const sessionId = req.query.token || req.headers.authorization?.replace('Bearer ', '');
     if (!sessionId || !sessions.has(sessionId)) {
-        return res.sendFile(path.join(__dirname, 'login.html'));
+        return res.sendFile(path.join(__dirname, '..', 'public', 'login.html'));
     }
-    res.sendFile(path.join(__dirname, 'admin.html'));
+    res.sendFile(path.join(__dirname, '..', 'public', 'admin.html'));
 });
 
 app.get('/privacy', (req, res) => {
-    res.sendFile(path.join(__dirname, 'privacy.html'));
+    res.sendFile(path.join(__dirname, '..', 'public', 'privacy.html'));
 });
 
 app.get('/consent', (req, res) => {
-    res.sendFile(path.join(__dirname, 'consent.html'));
+    res.sendFile(path.join(__dirname, '..', 'public', 'consent.html'));
 });
 
 app.get('/terms', (req, res) => {
-    res.sendFile(path.join(__dirname, 'terms.html'));
+    res.sendFile(path.join(__dirname, '..', 'public', 'terms.html'));
 });
 
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
+    res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
 });
 
 if (process.env.VERCEL === undefined) {

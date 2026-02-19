@@ -5,7 +5,7 @@ const crypto = require('crypto');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'lash2026';
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || '1234';
 
 app.use(cors());
 app.use(express.json());

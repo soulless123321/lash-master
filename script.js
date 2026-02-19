@@ -29,17 +29,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const form = document.getElementById('bookingForm');
     
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
         e.preventDefault();
         
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
         
-        console.log('Заявка отправлена:', data);
+        const submitBtn = form.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Отправка...';
         
-        alert('Спасибо! Ваша заявка отправлена. Мы свяжемся с вами в ближайшее время.');
+        try {
+            const response = await fetch('/api/bookings', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                alert('Спасибо! Ваша заявка отправлена. Мы свяжемся с вами в ближайшее время.');
+                form.reset();
+            } else {
+                alert('Ошибка: ' + result.error);
+            }
+        } catch (error) {
+            alert('Ошибка отправки. Попробуйте позже.');
+            console.error(error);
+        }
         
-        form.reset();
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Отправить заявку';
     });
 
     const observerOptions = {

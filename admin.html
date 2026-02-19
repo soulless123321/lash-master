@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ-панель | Lash Master</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%);
+            color: white;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+        }
+        
+        .logo span {
+            color: #d4a574;
+        }
+        
+        .stats {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 28px;
+            font-weight: 700;
+            color: #d4a574;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            opacity: 0.7;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+        
+        .title {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            margin-bottom: 30px;
+            color: #333;
+        }
+        
+        .bookings-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .booking-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 20px;
+            align-items: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .booking-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+        
+        .booking-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #d4a574 0%, #b8956a 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        
+        .booking-info h3 {
+            font-size: 18px;
+            margin-bottom: 6px;
+            color: #333;
+        }
+        
+        .booking-info p {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 4px;
+        }
+        
+        .booking-service {
+            display: inline-block;
+            background: #f5efe8;
+            color: #b8956a;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            margin-top: 8px;
+        }
+        
+        .booking-date {
+            font-size: 13px;
+            color: #999;
+            margin-top: 8px;
+        }
+        
+        .booking-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .btn-delete {
+            background: #ff4757;
+            color: white;
+        }
+        
+        .btn-delete:hover {
+            background: #ff3344;
+        }
+        
+        .btn-phone {
+            background: #2ed573;
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+        
+        .btn-phone:hover {
+            background: #26af61;
+        }
+        
+        .empty {
+            text-align: center;
+            padding: 60px;
+            color: #999;
+            font-size: 18px;
+        }
+        
+        .refresh-btn {
+            background: #d4a574;
+            color: white;
+            margin-bottom: 20px;
+        }
+        
+        .refresh-btn:hover {
+            background: #b8956a;
+        }
+        
+        @media (max-width: 768px) {
+            .booking-card {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .booking-icon {
+                margin: 0 auto;
+            }
+            
+            .booking-actions {
+                flex-direction: row;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">Lash<span>Master</span> | Админ</div>
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-number" id="totalCount">0</div>
+                <div class="stat-label">Всего заявок</div>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <h1 class="title">Заявки на запись</h1>
+        <button class="btn refresh-btn" onclick="loadBookings()">🔄 Обновить</button>
+        <div class="bookings-list" id="bookingsList">
+            <div class="empty">Загрузка...</div>
+        </div>
+    </div>
+    
+    <script>
+        const serviceNames = {
+            'lamination': 'Ламинирование ресниц',
+            'botox': 'Ботокс ресниц',
+            'lamination-botox': 'Ламинирование + Ботокс',
+            'coloring': 'Окрашивание ресниц',
+            'brows': 'Ламинирование бровей',
+            'extension': 'Наращивание ресниц'
+        };
+        
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('ru-RU', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+        
+        async function loadBookings() {
+            const list = document.getElementById('bookingsList');
+            list.innerHTML = '<div class="empty">Загрузка...</div>';
+            
+            try {
+                const response = await fetch('/api/bookings');
+                const bookings = await response.json();
+                
+                document.getElementById('totalCount').textContent = bookings.length;
+                
+                if (bookings.length === 0) {
+                    list.innerHTML = '<div class="empty">Пока нет заявок</div>';
+                    return;
+                }
+                
+                list.innerHTML = bookings.map(booking => `
+                    <div class="booking-card">
+                        <div class="booking-icon">👁️</div>
+                        <div class="booking-info">
+                            <h3>${booking.name}</h3>
+                            <p>📱 ${booking.phone}</p>
+                            <span class="booking-service">${serviceNames[booking.service] || booking.service}</span>
+                            ${booking.message ? `<p style="margin-top: 8px; font-style: italic;">"${booking.message}"</p>` : ''}
+                            <div class="booking-date">📅 ${formatDate(booking.created_at)}</div>
+                        </div>
+                        <div class="booking-actions">
+                            <a href="tel:${booking.phone}" class="btn btn-phone">📞 Позвонить</a>
+                            <button class="btn btn-delete" onclick="deleteBooking(${booking.id})">🗑️ Удалить</button>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                list.innerHTML = '<div class="empty">Ошибка загрузки: ' + error.message + '</div>';
+            }
+        }
+        
+        async function deleteBooking(id) {
+            if (!confirm('Удалить эту заявку?')) return;
+            
+            try {
+                await fetch('/api/bookings/' + id, { method: 'DELETE' });
+                loadBookings();
+            } catch (error) {
+                alert('Ошибка: ' + error.message);
+            }
+        }
+        
+        loadBookings();
+        setInterval(loadBookings, 30000);
+    </script>
+</body>
+</html>

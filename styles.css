@@ -180,38 +180,33 @@ h1, h2, h3, h4 {
     overflow: hidden;
 }
 
-.hero::before {
-    content: '';
+.hero-bg {
     position: absolute;
-    top: -50%;
-    right: -20%;
-    width: 800px;
-    height: 800px;
-    background: radial-gradient(circle, rgba(201, 168, 124, 0.15) 0%, transparent 70%);
-    animation: float 15s ease-in-out infinite;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=1920&q=80');
+    background-size: cover;
+    background-position: center;
+    z-index: 0;
 }
 
-.hero::after {
-    content: '';
+.hero-overlay {
     position: absolute;
-    bottom: -30%;
-    left: -10%;
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(circle, rgba(201, 168, 124, 0.1) 0%, transparent 70%);
-    animation: float 12s ease-in-out infinite reverse;
-}
-
-@keyframes float {
-    0%, 100% { transform: translate(0, 0) rotate(0deg); }
-    50% { transform: translate(30px, 20px) rotate(5deg); }
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.85) 100%);
+    z-index: 1;
 }
 
 .hero-content {
-    text-align: center;
-    z-index: 2;
-    padding: 0 24px;
     position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 0 24px;
     width: 100%;
     max-width: 900px;
     margin: 0 auto;

@@ -1,20 +1,26 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
 
 :root {
-    --primary: #c9a87c;
-    --primary-light: #e8d5b7;
-    --primary-dark: #a68b5b;
+    --primary: #d4a574;
+    --primary-light: #f0e6d8;
+    --primary-dark: #b8956a;
+    --primary-gold: #e8c9a0;
     --secondary: #1a1a1a;
     --text: #2d2d2d;
     --text-light: #6b6b6b;
     --bg: #fdfcfa;
     --bg-alt: #f7f4f0;
     --white: #ffffff;
-    --gradient: linear-gradient(135deg, #c9a87c 0%, #a68b5b 100%);
-    --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.05);
-    --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.08);
-    --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.12);
-    --shadow-glow: 0 10px 40px rgba(201, 168, 124, 0.3);
+    --gradient: linear-gradient(135deg, #d4a574 0%, #b8956a 50%, #a68b5b 100%);
+    --gradient-soft: linear-gradient(135deg, #f5efe8 0%, #e8dcc8 100%);
+    --shadow-sm: 0 4px 15px rgba(0, 0, 0, 0.04);
+    --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.08);
+    --shadow-glow: 0 10px 40px rgba(212, 165, 116, 0.25);
+    --radius-sm: 8px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --radius-xl: 32px;
 }
 
 * {
@@ -306,8 +312,8 @@ h1, h2, h3, h4 {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-    transition: left 0.5s;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    transition: left 0.6s ease;
 }
 
 .btn-primary:hover::before {
@@ -315,8 +321,12 @@ h1, h2, h3, h4 {
 }
 
 .btn-primary:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 15px 50px rgba(201, 168, 124, 0.4);
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 20px 60px rgba(212, 165, 116, 0.35);
+}
+
+.btn-primary:active {
+    transform: translateY(-2px) scale(1.01);
 }
 
 .section-title {
@@ -375,7 +385,7 @@ h1, h2, h3, h4 {
 .image-frame {
     position: relative;
     padding-bottom: 120%;
-    border-radius: 20px;
+    border-radius: var(--radius-lg);
     overflow: hidden;
     box-shadow: var(--shadow-lg);
 }
@@ -388,7 +398,7 @@ h1, h2, h3, h4 {
     right: 20px;
     bottom: 20px;
     border: 3px solid var(--primary);
-    border-radius: 20px;
+    border-radius: var(--radius-lg);
     z-index: -1;
 }
 
@@ -468,14 +478,28 @@ h1, h2, h3, h4 {
 .service-card {
     background: var(--white);
     padding: 45px 35px;
-    border-radius: 20px;
+    border-radius: var(--radius-lg);
     box-shadow: var(--shadow-md);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
+    border: 1px solid rgba(212, 165, 116, 0.1);
 }
 
 .service-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--gradient-soft);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 0;
+}
+
+.service-card::after {
     content: '';
     position: absolute;
     top: 0;
@@ -486,22 +510,29 @@ h1, h2, h3, h4 {
     transform: scaleX(0);
     transform-origin: left;
     transition: transform 0.4s ease;
+    z-index: 1;
 }
 
 .service-card:hover {
-    transform: translateY(-10px);
-    box-shadow: var(--shadow-lg);
+    transform: translateY(-12px);
+    box-shadow: var(--shadow-lg), var(--shadow-glow);
+    border-color: transparent;
 }
 
 .service-card:hover::before {
+    opacity: 1;
+}
+
+.service-card:hover::after {
     transform: scaleX(1);
 }
 
 .service-card.featured {
     border: 2px solid var(--primary);
+    background: linear-gradient(135deg, #fdf9f5 0%, #fff 100%);
 }
 
-.service-card.featured::before {
+.service-card.featured::after {
     transform: scaleX(1);
 }
 
@@ -516,7 +547,7 @@ h1, h2, h3, h4 {
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 1px;
-    border-radius: 20px;
+    border-radius: var(--radius-lg);
 }
 
 .service-icon {
@@ -564,7 +595,7 @@ h1, h2, h3, h4 {
 .portfolio-item {
     aspect-ratio: 1;
     overflow: hidden;
-    border-radius: 16px;
+    border-radius: var(--radius-lg);
     box-shadow: var(--shadow-md);
     transition: all 0.4s ease;
     cursor: pointer;
@@ -610,14 +641,16 @@ h1, h2, h3, h4 {
 .review-card {
     background: var(--white);
     padding: 35px;
-    border-radius: 20px;
+    border-radius: var(--radius-lg);
     box-shadow: var(--shadow-sm);
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(212, 165, 116, 0.1);
 }
 
 .review-card:hover {
-    box-shadow: var(--shadow-md);
-    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-8px) scale(1.02);
+    border-color: rgba(212, 165, 116, 0.3);
 }
 
 .review-header {
@@ -677,7 +710,7 @@ h1, h2, h3, h4 {
 .certificate-image {
     aspect-ratio: 4/3;
     background: linear-gradient(135deg, #f3eee6 0%, #e8dcc8 100%);
-    border-radius: 16px;
+    border-radius: var(--radius-lg);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -719,7 +752,7 @@ h1, h2, h3, h4 {
 
 .faq-item {
     background: var(--white);
-    border-radius: 16px;
+    border-radius: var(--radius-lg);
     overflow: hidden;
     box-shadow: var(--shadow-sm);
     transition: all 0.3s ease;
@@ -800,7 +833,7 @@ h1, h2, h3, h4 {
     gap: 20px;
     padding: 20px;
     background: var(--bg-alt);
-    border-radius: 16px;
+    border-radius: var(--radius-lg);
     transition: all 0.3s ease;
 }
 
@@ -843,16 +876,17 @@ h1, h2, h3, h4 {
 
 .map-container {
     margin-top: 20px;
-    border-radius: 16px;
+    border-radius: var(--radius-lg);
     overflow: hidden;
     box-shadow: var(--shadow-md);
 }
 
 .contacts-form {
-    background: var(--bg-alt);
+    background: linear-gradient(145deg, #ffffff 0%, #f9f6f2 100%);
     padding: 50px;
-    border-radius: 24px;
-    box-shadow: var(--shadow-md);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid rgba(212, 165, 116, 0.15);
 }
 
 .form-group {
@@ -864,13 +898,14 @@ h1, h2, h3, h4 {
 .form textarea {
     width: 100%;
     padding: 18px 24px;
-    border: 2px solid transparent;
-    border-radius: 12px;
+    border: 2px solid #eee;
+    border-radius: var(--radius-md);
     font-size: 15px;
     font-family: 'Outfit', sans-serif;
-    transition: all 0.3s;
+    transition: all 0.3s ease;
     background: var(--white);
     color: var(--text);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
 }
 
 .form input:focus,
@@ -878,7 +913,8 @@ h1, h2, h3, h4 {
 .form textarea:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 0 4px rgba(201, 168, 124, 0.15);
+    box-shadow: 0 0 0 4px rgba(212, 165, 116, 0.2), 0 4px 15px rgba(0,0,0,0.05);
+    transform: translateY(-2px);
 }
 
 .form select {
@@ -1239,7 +1275,7 @@ select option:disabled {
     }
     
     .portfolio-item {
-        border-radius: 12px;
+        border-radius: var(--radius-md);
     }
 
     .reviews {
@@ -1302,7 +1338,7 @@ select option:disabled {
 
     .contacts-form {
         padding: 24px;
-        border-radius: 20px;
+        border-radius: var(--radius-lg);
     }
     
     .form input,

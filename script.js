@@ -1,43 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    let bookedDates = [];
-    
-    async function loadBookedDates() {
-        try {
-            const response = await fetch('/api/dates');
-            bookedDates = await response.json();
-            updateTimeSlots();
-        } catch (error) {
-            console.error('Error loading booked dates:', error);
-        }
-    }
-    
-    function updateTimeSlots() {
-        const dateInput = document.querySelector('input[type="date"]');
-        const timeSelect = document.querySelector('select[name="time"]');
-        
-        if (!dateInput || !timeSelect) return;
-        
-        const selectedDate = dateInput.value;
-        
-        Array.from(timeSelect.options).forEach(option => {
-            if (!option.value) return;
-            
-            const isBooked = bookedDates.some(b => 
-                b.date === selectedDate && b.time === option.value
-            );
-            
-            option.disabled = isBooked;
-            option.textContent = isBooked ? option.value + ' (занято)' : option.value;
-        });
-    }
-    
-    const dateInput = document.querySelector('input[type="date"]');
-    if (dateInput) {
-        dateInput.addEventListener('change', updateTimeSlots);
-    }
-    
-    loadBookedDates();
-    
     const menuToggle = document.querySelector('.menu-toggle');
     const navLinks = document.querySelector('.nav-links');
     
@@ -87,9 +48,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const result = await response.json();
             
             if (result.success) {
-                alert('Спасибо! Ваша заявка отправлена. Мы свяжемся с вами в ближайшее время.');
+                alert('Спасибо! Ваша заявка отправлена. Мы свяжемся с вами для согласования времени.');
                 form.reset();
-                loadBookedDates();
             } else {
                 alert('Ошибка: ' + result.error);
             }
@@ -108,12 +68,6 @@ document.addEventListener('DOMContentLoaded', () => {
             item.classList.toggle('active');
         });
     });
-
-    const dateInputEl = document.querySelector('input[type="date"]');
-    if (dateInputEl) {
-        const today = new Date().toISOString().split('T')[0];
-        dateInputEl.setAttribute('min', today);
-    }
     
     if (localStorage.getItem('cookiesAccepted') !== 'true') {
         document.getElementById('cookieBanner').classList.add('show');

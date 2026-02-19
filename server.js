@@ -105,7 +105,7 @@ app.get('/api/dates', async (req, res) => {
     try {
         const { getDB } = await getDb();
         const database = getDB();
-        const results = database.exec("SELECT date, time FROM bookings WHERE date != '' AND date IS NOT NULL");
+        const results = database.exec("SELECT date, time FROM bookings WHERE date != '' AND date IS NOT NULL AND status = 'confirmed'");
         
         if (results.length === 0) {
             return res.json([]);
@@ -121,6 +121,29 @@ app.get('/api/dates', async (req, res) => {
         res.json(bookedSlots);
     } catch (error) {
         console.error('Error getting dates:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.post('/api/bookings/:id/confirm', async (req, res) => {
+    if (!checkAuth(req)) {
+        return res.status(401).json({ error: 'Требуется авторизация' });
+    }
+    
+    try {
+        const { date, time } = req.body;
+        const { getDB, saveDB } = await getDb();
+        const database = getDB();
+        
+        database.run(
+            'UPDATE bookings SET date = ?, time = ?, status = ? WHERE id = ?',
+            [date, time, 'confirmed', req.params.id]
+        );
+        saveDB();
+        
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Error confirming booking:', error);
         res.status(500).json({ error: error.message });
     }
 });

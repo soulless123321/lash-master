@@ -232,6 +232,57 @@
             color: #1976d2;
         }
         
+        .status-confirmed {
+            background: #e8f5e9;
+            color: #388e3c;
+        }
+        
+        .booking-card.confirmed::before {
+            background: #4caf50;
+        }
+        
+        .booking-assign {
+            background: #fff8e1;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+        }
+        
+        .assign-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .assign-input {
+            flex: 1;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .btn-confirm {
+            background: #4caf50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn-confirm:hover {
+            background: #43a047;
+        }
+        
         .booking-body {
             margin-bottom: 15px;
         }
@@ -593,7 +644,7 @@
             }
             
             list.innerHTML = bookings.map(booking => `
-                <div class="booking-card">
+                <div class="booking-card ${booking.status === 'confirmed' ? 'confirmed' : ''}">
                     <div class="booking-header">
                         <div class="booking-user">
                             <div class="booking-avatar">${getInitials(booking.name)}</div>
@@ -602,17 +653,44 @@
                                 <div class="booking-id">#${booking.id}</div>
                             </div>
                         </div>
-                        <span class="booking-status status-new">Новая</span>
+                        <span class="booking-status ${booking.status === 'confirmed' ? 'status-confirmed' : 'status-new'}">
+                            ${booking.status === 'confirmed' ? 'Подтверждена' : 'Новая'}
+                        </span>
                     </div>
                     <div class="booking-body">
                         <div class="booking-service">
                             <i class="bi bi-scissors"></i>
                             ${serviceNames[booking.service] || booking.service}
                         </div>
-                        <div class="booking-date-time">
-                            ${booking.date ? `<span><i class="bi bi-calendar3"></i> ${booking.date}</span>` : ''}
-                            ${booking.time ? `<span><i class="bi bi-clock"></i> ${booking.time}</span>` : ''}
-                        </div>
+                        ${booking.status === 'confirmed' ? `
+                            <div class="booking-date-time">
+                                <span><i class="bi bi-calendar3"></i> ${booking.date}</span>
+                                <span><i class="bi bi-clock"></i> ${booking.time}</span>
+                            </div>
+                        ` : `
+                            <div class="booking-assign">
+                                <div class="assign-row">
+                                    <input type="date" id="date-${booking.id}" class="assign-input">
+                                    <select id="time-${booking.id}" class="assign-input">
+                                        <option value="">Выберите время</option>
+                                        <option value="09:00">09:00</option>
+                                        <option value="10:00">10:00</option>
+                                        <option value="11:00">11:00</option>
+                                        <option value="12:00">12:00</option>
+                                        <option value="13:00">13:00</option>
+                                        <option value="14:00">14:00</option>
+                                        <option value="15:00">15:00</option>
+                                        <option value="16:00">16:00</option>
+                                        <option value="17:00">17:00</option>
+                                        <option value="18:00">18:00</option>
+                                        <option value="19:00">19:00</option>
+                                    </select>
+                                </div>
+                                <button class="btn btn-confirm" onclick="confirmBooking(${booking.id})">
+                                    <i class="bi bi-check2"></i> Подтвердить
+                                </button>
+                            </div>
+                        `}
                         <div class="booking-detail">
                             <i class="bi bi-telephone"></i>
                             ${booking.phone}
@@ -671,6 +749,36 @@
                 loadBookings();
             } catch (error) {
                 showNotification('Ошибка удаления', 'error');
+            }
+        }
+        
+        async function confirmBooking(id) {
+            const date = document.getElementById('date-' + id).value;
+            const time = document.getElementById('time-' + id).value;
+            
+            if (!date || !time) {
+                showNotification('Выберите дату и время', 'error');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/bookings/' + id + '/confirm', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + localStorage.getItem('adminToken')
+                    },
+                    body: JSON.stringify({ date, time })
+                });
+                
+                if (response.ok) {
+                    showNotification('Заявка подтверждена');
+                    loadBookings();
+                } else {
+                    showNotification('Ошибка подтверждения', 'error');
+                }
+            } catch (error) {
+                showNotification('Ошибка подтверждения', 'error');
             }
         }
         

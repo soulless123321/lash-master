@@ -1,15 +1,42 @@
 document.addEventListener('DOMContentLoaded', () => {
-    let captchaAnswer = 0;
+    let bookedDates = [];
     
-    function generateCaptcha() {
-        const a = Math.floor(Math.random() * 5) + 1;
-        const b = Math.floor(Math.random() * 5) + 1;
-        captchaAnswer = a + b;
-        const captchaEl = document.getElementById('captchaQuestion');
-        if (captchaEl) captchaEl.textContent = a + ' + ' + b + ' = ?';
+    async function loadBookedDates() {
+        try {
+            const response = await fetch('/api/dates');
+            bookedDates = await response.json();
+            updateTimeSlots();
+        } catch (error) {
+            console.error('Error loading booked dates:', error);
+        }
     }
     
-    generateCaptcha();
+    function updateTimeSlots() {
+        const dateInput = document.querySelector('input[type="date"]');
+        const timeSelect = document.querySelector('select[name="time"]');
+        
+        if (!dateInput || !timeSelect) return;
+        
+        const selectedDate = dateInput.value;
+        
+        Array.from(timeSelect.options).forEach(option => {
+            if (!option.value) return;
+            
+            const isBooked = bookedDates.some(b => 
+                b.date === selectedDate && b.time === option.value
+            );
+            
+            option.disabled = isBooked;
+            option.textContent = isBooked ? option.value + ' (занято)' : option.value;
+        });
+    }
+    
+    const dateInput = document.querySelector('input[type="date"]');
+    if (dateInput) {
+        dateInput.addEventListener('change', updateTimeSlots);
+    }
+    
+    loadBookedDates();
     
     const menuToggle = document.querySelector('.menu-toggle');
     const navLinks = document.querySelector('.nav-links');
@@ -41,14 +68,6 @@ document.addEventListener('DOMContentLoaded', () => {
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
         
-        const captchaInput = document.getElementById('captchaInput');
-        if (parseInt(captchaInput.value) !== captchaAnswer) {
-            alert('Неверный ответ на вопрос. Попробуйте ещё раз.');
-            generateCaptcha();
-            captchaInput.value = '';
-            return;
-        }
-        
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
         
@@ -70,8 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (result.success) {
                 alert('Спасибо! Ваша заявка отправлена. Мы свяжемся с вами в ближайшее время.');
                 form.reset();
-                generateCaptcha();
-                captchaInput.value = '';
+                loadBookedDates();
             } else {
                 alert('Ошибка: ' + result.error);
             }
@@ -91,10 +109,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    const dateInput = document.querySelector('input[type="date"]');
-    if (dateInput) {
+    const dateInputEl = document.querySelector('input[type="date"]');
+    if (dateInputEl) {
         const today = new Date().toISOString().split('T')[0];
-        dateInput.setAttribute('min', today);
+        dateInputEl.setAttribute('min', today);
     }
     
     if (localStorage.getItem('cookiesAccepted') !== 'true') {

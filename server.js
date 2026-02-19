@@ -73,6 +73,58 @@ app.get('/api/bookings', async (req, res) => {
     }
 });
 
+app.get('/api/booked-dates', async (req, res) => {
+    if (!checkAuth(req)) {
+        return res.status(401).json({ error: 'Требуется авторизация' });
+    }
+    
+    try {
+        const { getDB } = await getDb();
+        const database = getDB();
+        const results = database.exec("SELECT date, time FROM bookings WHERE date != '' AND date IS NOT NULL");
+        
+        if (results.length === 0) {
+            return res.json([]);
+        }
+        
+        const bookedSlots = results[0].values
+            .filter(row => row[0])
+            .map(row => ({
+                date: row[0],
+                time: row[1]
+            }));
+        
+        res.json(bookedSlots);
+    } catch (error) {
+        console.error('Error getting booked dates:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.get('/api/dates', async (req, res) => {
+    try {
+        const { getDB } = await getDb();
+        const database = getDB();
+        const results = database.exec("SELECT date, time FROM bookings WHERE date != '' AND date IS NOT NULL");
+        
+        if (results.length === 0) {
+            return res.json([]);
+        }
+        
+        const bookedSlots = results[0].values
+            .filter(row => row[0])
+            .map(row => ({
+                date: row[0],
+                time: row[1]
+            }));
+        
+        res.json(bookedSlots);
+    } catch (error) {
+        console.error('Error getting dates:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
 app.post('/api/bookings', async (req, res) => {
     try {
         console.log('Получена заявка:', req.body);

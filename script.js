@@ -1,4 +1,16 @@
 document.addEventListener('DOMContentLoaded', () => {
+    let captchaAnswer = 0;
+    
+    function generateCaptcha() {
+        const a = Math.floor(Math.random() * 5) + 1;
+        const b = Math.floor(Math.random() * 5) + 1;
+        captchaAnswer = a + b;
+        const captchaEl = document.getElementById('captchaQuestion');
+        if (captchaEl) captchaEl.textContent = a + ' + ' + b + ' = ?';
+    }
+    
+    generateCaptcha();
+    
     const menuToggle = document.querySelector('.menu-toggle');
     const navLinks = document.querySelector('.nav-links');
     
@@ -13,24 +25,29 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const header = document.querySelector('.header');
-    let lastScroll = 0;
-
+    
     window.addEventListener('scroll', () => {
         const currentScroll = window.pageYOffset;
         
-        if (currentScroll > 100) {
-            header.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
+        if (currentScroll > 50) {
+            header.classList.add('scrolled');
         } else {
-            header.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.05)';
+            header.classList.remove('scrolled');
         }
-        
-        lastScroll = currentScroll;
     });
 
     const form = document.getElementById('bookingForm');
     
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
+        
+        const captchaInput = document.getElementById('captchaInput');
+        if (parseInt(captchaInput.value) !== captchaAnswer) {
+            alert('Неверный ответ на вопрос. Попробуйте ещё раз.');
+            generateCaptcha();
+            captchaInput.value = '';
+            return;
+        }
         
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
@@ -53,6 +70,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (result.success) {
                 alert('Спасибо! Ваша заявка отправлена. Мы свяжемся с вами в ближайшее время.');
                 form.reset();
+                generateCaptcha();
+                captchaInput.value = '';
             } else {
                 alert('Ошибка: ' + result.error);
             }
@@ -62,8 +81,25 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         submitBtn.disabled = false;
-        submitBtn.textContent = 'Отправить заявку';
+        submitBtn.textContent = 'Записаться на приём';
     });
+
+    document.querySelectorAll('.faq-question').forEach(question => {
+        question.addEventListener('click', () => {
+            const item = question.parentElement;
+            item.classList.toggle('active');
+        });
+    });
+
+    const dateInput = document.querySelector('input[type="date"]');
+    if (dateInput) {
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.setAttribute('min', today);
+    }
+    
+    if (localStorage.getItem('cookiesAccepted') !== 'true') {
+        document.getElementById('cookieBanner').classList.add('show');
+    }
 
     const observerOptions = {
         threshold: 0.1,
@@ -101,4 +137,20 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+    
+    const scrollTopBtn = document.getElementById('scrollTop');
+    if (scrollTopBtn) {
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        });
+        
+        scrollTopBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
 });

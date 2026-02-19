@@ -2,14 +2,24 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Профессиональное ламинирование и ботокс ресниц в Москве. Запись на процедуру.">
+    <meta name="theme-color" content="#c9a87c">
     <title>Lash Master | Ламинирование Ресниц</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <div class="cookie-banner" id="cookieBanner">
+        <div class="cookie-content">
+            <p>Мы используем cookies для улучшения работы сайта. Продолжая использовать сайт, вы соглашаетесь с <a href="/privacy">политикой конфиденциальности</a>.</p>
+            <button class="btn-cookie" onclick="acceptCookies()">Принять</button>
+        </div>
+    </div>
+
     <header class="header">
         <nav class="nav">
             <div class="logo">Lash<span>Master</span></div>
@@ -17,6 +27,9 @@
                 <li><a href="#about">Обо мне</a></li>
                 <li><a href="#services">Услуги</a></li>
                 <li><a href="#portfolio">Портфолио</a></li>
+                <li><a href="#reviews">Отзывы</a></li>
+                <li><a href="#certificates">Сертификаты</a></li>
+                <li><a href="#faq">FAQ</a></li>
                 <li><a href="#contacts">Контакты</a></li>
             </ul>
             <button class="menu-toggle" aria-label="Menu">
@@ -29,8 +42,9 @@
 
     <section class="hero">
         <div class="hero-content">
-            <h1 class="hero-title">Идеальные ресницы — <br>ваша уверенность каждый день</h1>
-            <p class="hero-subtitle">Профессиональное ламинирование и ботокс ресниц в Москве</p>
+            <span class="hero-badge">Профессиональный уход за ресницами</span>
+            <h1 class="hero-title">Идеальные ресницы — <br><span>ваша уверенность</span></h1>
+            <p class="hero-subtitle">Сертифицированный мастер ламинирования и ботокса ресниц в Москве</p>
             <a href="#contacts" class="btn btn-primary">Записаться на процедуру</a>
         </div>
         <div class="hero-decoration"></div>
@@ -42,6 +56,7 @@
                 <div class="about-image">
                     <div class="image-frame">
                         <div class="image-placeholder">
+                            <i class="bi bi-person"></i>
                             <span>Фото мастера</span>
                         </div>
                     </div>
@@ -75,38 +90,38 @@
             <p class="section-subtitle center">Профессиональные процедуры для красоты ваших ресниц</p>
             <div class="services-grid">
                 <div class="service-card">
-                    <div class="service-icon">✨</div>
+                    <div class="service-icon"><i class="bi bi-magic"></i></div>
                     <h3 class="service-title">Ламинирование ресниц</h3>
                     <p class="service-desc">Придание ресницам изгиба, объёма и насыщенного цвета. Эффект сохраняется до 8 недель.</p>
                     <div class="service-price">от 3 500 ₽</div>
                 </div>
                 <div class="service-card featured">
                     <div class="service-badge">Хит</div>
-                    <div class="service-icon">💎</div>
+                    <div class="service-icon"><i class="bi bi-gem"></i></div>
                     <h3 class="service-title">Ботокс ресниц</h3>
-                    <p class="service-desc">Глубокое восстановление и питание ресниц. Ресницы становятся thicker, длиннее и здоровее.</p>
+                    <p class="service-desc">Глубокое восстановление и питание ресниц. Ресницы становятся гуще, длиннее и здоровее.</p>
                     <div class="service-price">от 4 000 ₽</div>
                 </div>
                 <div class="service-card">
-                    <div class="service-icon">👁️</div>
+                    <div class="service-icon"><i class="bi bi-eye"></i></div>
                     <h3 class="service-title">Ламинирование + Ботокс</h3>
                     <p class="service-desc">Комплексная процедура для максимального эффекта. Изгиб + восстановление.</p>
                     <div class="service-price">от 6 500 ₽</div>
                 </div>
                 <div class="service-card">
-                    <div class="service-icon">🎨</div>
+                    <div class="service-icon"><i class="bi bi-palette"></i></div>
                     <h3 class="service-title">Окрашивание ресниц</h3>
                     <p class="service-desc">Стойкое окрашивание в любой оттенок. Подчеркнёт глубину и выразительность глаз.</p>
                     <div class="service-price">от 1 500 ₽</div>
                 </div>
                 <div class="service-card">
-                    <div class="service-icon">📏</div>
+                    <div class="service-icon"><i class="bi bi-brush"></i></div>
                     <h3 class="service-title">Ламинирование бровей</h3>
                     <p class="service-desc">Идеальная укладка бровей. Послушные, ухоженные брови на долгое время.</p>
                     <div class="service-price">от 2 500 ₽</div>
                 </div>
                 <div class="service-card">
-                    <div class="service-icon">💅</div>
+                    <div class="service-icon"><i class="bi bi-feather"></i></div>
                     <h3 class="service-title">Наращивание ресниц</h3>
                     <p class="service-desc">Объёмное наращивание по классической или объёмной технологии.</p>
                     <div class="service-price">от 4 500 ₽</div>
@@ -122,33 +137,143 @@
             <div class="portfolio-grid">
                 <div class="portfolio-item">
                     <div class="portfolio-image">
-                        <div class="image-placeholder small">До/После</div>
+                        <i class="bi bi-camera"></i>
+                        <span>До/После</span>
                     </div>
                 </div>
                 <div class="portfolio-item">
                     <div class="portfolio-image">
-                        <div class="image-placeholder small">До/После</div>
+                        <i class="bi bi-camera"></i>
+                        <span>До/После</span>
                     </div>
                 </div>
                 <div class="portfolio-item">
                     <div class="portfolio-image">
-                        <div class="image-placeholder small">До/После</div>
+                        <i class="bi bi-camera"></i>
+                        <span>До/После</span>
                     </div>
                 </div>
                 <div class="portfolio-item">
                     <div class="portfolio-image">
-                        <div class="image-placeholder small">До/После</div>
+                        <i class="bi bi-camera"></i>
+                        <span>До/После</span>
                     </div>
                 </div>
                 <div class="portfolio-item">
                     <div class="portfolio-image">
-                        <div class="image-placeholder small">До/После</div>
+                        <i class="bi bi-camera"></i>
+                        <span>До/После</span>
                     </div>
                 </div>
                 <div class="portfolio-item">
                     <div class="portfolio-image">
-                        <div class="image-placeholder small">До/После</div>
+                        <i class="bi bi-camera"></i>
+                        <span>До/После</span>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="reviews" class="reviews">
+        <div class="container">
+            <h2 class="section-title center">Отзывы клиентов</h2>
+            <p class="section-subtitle center">Что говорят мои клиенты</p>
+            <div class="reviews-grid">
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="review-avatar">А</div>
+                        <div class="review-author">Анна</div>
+                    </div>
+                    <div class="review-stars"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
+                    <p class="review-text">Делала ламинирование в первый раз и очень довольна! Мастер очень внимательная, всё объяснила. Ресницы выглядят потрясающе.</p>
+                </div>
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="review-avatar">М</div>
+                        <div class="review-author">Мария</div>
+                    </div>
+                    <div class="review-stars"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
+                    <p class="review-text">Хожу к этому мастеру уже год. Всегда отличный результат! Ресницы держатся долго, выглядят ухоженно. Рекомендую!</p>
+                </div>
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="review-avatar">Е</div>
+                        <div class="review-author">Елена</div>
+                    </div>
+                    <div class="review-stars"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
+                    <p class="review-text">Делала ламинирование + ботокс. Эффект превзошёл все ожидания! Ресницы стали гуще и длиннее.</p>
+                </div>
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="review-avatar">О</div>
+                        <div class="review-author">Ольга</div>
+                    </div>
+                    <div class="review-stars"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
+                    <p class="review-text">Отличный мастер, чисто и уютно. Сделала идеальную укладку бровей — теперь не нужно каждое утро их расчёсывать.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="certificates" class="certificates">
+        <div class="container">
+            <h2 class="section-title center">Сертификаты и дипломы</h2>
+            <p class="section-subtitle center">Подтверждение моей квалификации</p>
+            <div class="certificates-grid">
+                <div class="certificate-card">
+                    <div class="certificate-image">
+                        <i class="bi bi-award"></i>
+                        <span>Сертификат</span>
+                    </div>
+                    <div class="certificate-title">Международный сертификат по ламинированию ресниц</div>
+                </div>
+                <div class="certificate-card">
+                    <div class="certificate-image">
+                        <i class="bi bi-patch-check"></i>
+                        <span>Диплом</span>
+                    </div>
+                    <div class="certificate-title">Диплом бровиста-колориста</div>
+                </div>
+                <div class="certificate-card">
+                    <div class="certificate-image">
+                        <i class="bi bi-mortarboard"></i>
+                        <span>Курс</span>
+                    </div>
+                    <div class="certificate-title">Курс по наращиванию ресниц</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="faq" class="faq">
+        <div class="container">
+            <h2 class="section-title center">Вопросы и ответы</h2>
+            <p class="section-subtitle center">Часто задаваемые вопросы</p>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <div class="faq-question">Сколько длится процедура ламинирования?</div>
+                    <div class="faq-answer">Процедура занимает от 1,5 до 2 часов. Это зависит от выбранной услуги и состояния ваших ресниц.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Как долго держится эффект?</div>
+                    <div class="faq-answer">Эффект ламинирования сохраняется от 6 до 8 недель, пока ресницы не обновятся естественным образом.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Больно ли делать ламинирование?</div>
+                    <div class="faq-answer">Процедура абсолютно безболезненная. Вы можете расслабиться во время сеанса — многие клиенты даже засыпают.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Можно ли красить ресницы после ламинирования?</div>
+                    <div class="faq-answer">Да, можно. Но рекомендуется подождать 24-48 часов после процедуры для лучшего результата.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Как ухаживать за ресницами после процедуры?</div>
+                    <div class="faq-answer">Первые 24 часа избегайте воды и пара. После можно умываться как обычно. Не рекомендуется тереть глаза.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Нужно ли записываться заранее?</div>
+                    <div class="faq-answer">Да, рекомендую записываться за 2-3 дня вперёд, так как свободное время быстро заполняется.</div>
                 </div>
             </div>
         </div>
@@ -159,24 +284,24 @@
             <div class="contacts-grid">
                 <div class="contacts-info">
                     <h2 class="section-title">Записаться на процедуру</h2>
-                    <p class="contacts-text">Выберите удобный способ связи, и я свяжусь с вами для подтверждения записи.</p>
+                    <p class="contacts-text">Выберите удобную дату и время, и я свяжусь с вами для подтверждения записи.</p>
                     <div class="contact-list">
                         <div class="contact-item">
-                            <span class="contact-icon">📱</span>
+                            <span class="contact-icon"><i class="bi bi-telephone"></i></span>
                             <div>
                                 <div class="contact-label">Телефон</div>
                                 <a href="tel:+79000000000" class="contact-link">+7 (900) 000-00-00</a>
                             </div>
                         </div>
                         <div class="contact-item">
-                            <span class="contact-icon">📸</span>
+                            <span class="contact-icon"><i class="bi bi-instagram"></i></span>
                             <div>
                                 <div class="contact-label">Instagram</div>
                                 <a href="#" class="contact-link">@lash_master</a>
                             </div>
                         </div>
                         <div class="contact-item">
-                            <span class="contact-icon">📍</span>
+                            <span class="contact-icon"><i class="bi bi-geo-alt"></i></span>
                             <div>
                                 <div class="contact-label">Адрес</div>
                                 <span class="contact-link">Москва, м. Чистые пруды</span>
@@ -203,10 +328,41 @@
                                 <option value="extension">Наращивание ресниц</option>
                             </select>
                         </div>
-                        <div class="form-group">
-                            <textarea name="message" placeholder="Комментарий (желаемая дата, время)" rows="4"></textarea>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <input type="date" name="date" required>
+                            </div>
+                            <div class="form-group">
+                                <select name="time" required>
+                                    <option value="">Время</option>
+                                    <option value="09:00">09:00</option>
+                                    <option value="10:00">10:00</option>
+                                    <option value="11:00">11:00</option>
+                                    <option value="12:00">12:00</option>
+                                    <option value="13:00">13:00</option>
+                                    <option value="14:00">14:00</option>
+                                    <option value="15:00">15:00</option>
+                                    <option value="16:00">16:00</option>
+                                    <option value="17:00">17:00</option>
+                                    <option value="18:00">18:00</option>
+                                    <option value="19:00">19:00</option>
+                                </select>
+                            </div>
                         </div>
-                        <button type="submit" class="btn btn-primary btn-full">Отправить заявку</button>
+                        <div class="form-group">
+                            <textarea name="message" placeholder="Комментарий" rows="3"></textarea>
+                        </div>
+                        <div class="form-group checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="consent" required>
+                                <span>Я согласен на <a href="/privacy" target="_blank">обработку персональных данных</a></span>
+                            </label>
+                        </div>
+                        <div class="form-group captcha-group">
+                            <label class="captcha-label"><span id="captchaQuestion"></span></label>
+                            <input type="number" id="captchaInput" required placeholder="Введите ответ">
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-full">Записаться на приём</button>
                     </form>
                 </div>
             </div>
@@ -217,11 +373,31 @@
         <div class="container">
             <div class="footer-content">
                 <div class="logo">Lash<span>Master</span></div>
+                <div class="footer-links">
+                    <a href="/privacy">Политика конфиденциальности</a>
+                    <a href="/terms">Пользовательское соглашение</a>
+                    <a href="/consent">Согласие на обработку ПД</a>
+                </div>
                 <p class="footer-text">© 2026 Lash Master. Все права защищены.</p>
+                <p class="footer-legal">ИНН: 000000000000 | ОГРН: 000000000000000</p>
             </div>
         </div>
     </footer>
 
+    <a href="#" class="scroll-top" id="scrollTop">
+        <i class="bi bi-arrow-up"></i>
+    </a>
+
     <script src="script.js"></script>
+    <script>
+    function acceptCookies() {
+            localStorage.setItem('cookiesAccepted', 'true');
+            document.getElementById('cookieBanner').classList.remove('show');
+        }
+        
+        if (localStorage.getItem('cookiesAccepted') === 'true') {
+            document.getElementById('cookieBanner').style.display = 'none';
+        }
+    </script>
 </body>
 </html>

@@ -43,6 +43,7 @@ body {
     background: var(--bg);
     font-weight: 400;
     overflow-x: hidden;
+    transition: background 0.5s ease, color 0.3s ease;
 }
 
 body::before {
@@ -294,29 +295,142 @@ body::before {
 
 /* Dark Theme */
 [data-theme="dark"] {
-    --bg: #1a1a1a;
-    --bg-alt: #252525;
-    --text: #f0f0f0;
-    --text-light: #a0a0a0;
-    --white: #252525;
-    --glass-bg: rgba(40, 40, 40, 0.7);
-    --glass-border: rgba(60, 60, 60, 0.5);
+    --bg: #0f0f0f;
+    --bg-alt: #1a1817;
+    --text: #f5f0eb;
+    --text-light: #9a918a;
+    --white: #1a1817;
+    --glass-bg: rgba(30, 27, 25, 0.8);
+    --glass-border: rgba(212, 165, 116, 0.15);
+    --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] body::before {
+    opacity: 0.05;
 }
 
 [data-theme="dark"] .hero-bg {
-    filter: brightness(0.5);
+    filter: brightness(0.4) saturate(0.8);
 }
 
 [data-theme="dark"] .hero-overlay {
-    background: linear-gradient(135deg, rgba(26, 26, 26, 0.95) 0%, rgba(26, 26, 26, 0.9) 100%);
+    background: linear-gradient(135deg, rgba(15, 15, 15, 0.97) 0%, rgba(15, 15, 15, 0.92) 100%);
 }
 
 [data-theme="dark"] .header {
-    background: rgba(26, 26, 26, 0.9);
+    background: rgba(15, 15, 15, 0.95);
+    border-bottom: 1px solid rgba(212, 165, 116, 0.1);
+}
+
+[data-theme="dark"] .header.scrolled {
+    background: rgba(15, 15, 15, 0.98);
+}
+
+[data-theme="dark"] .nav-links a {
+    color: var(--text);
+}
+
+[data-theme="dark"] .nav-links a::after {
+    background: var(--gradient);
 }
 
 [data-theme="dark"] .theme-toggle {
-    background: rgba(40, 40, 40, 0.7);
+    background: var(--glass-bg);
+    border-color: rgba(212, 165, 116, 0.2);
+}
+
+[data-theme="dark"] .blob {
+    opacity: 0.15;
+}
+
+[data-theme="dark"] .aurora {
+    opacity: 0.5;
+}
+
+[data-theme="dark"] .service-card,
+[data-theme="dark"] .review-card,
+[data-theme="dark"] .certificate-card {
+    background: var(--glass-bg);
+    border-color: rgba(212, 165, 116, 0.15);
+}
+
+[data-theme="dark"] .service-card:hover,
+[data-theme="dark"] .review-card:hover {
+    border-color: rgba(212, 165, 116, 0.3);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 40px rgba(212, 165, 116, 0.1);
+}
+
+[data-theme="dark"] .contacts-form {
+    background: var(--glass-bg);
+    border-color: rgba(212, 165, 116, 0.15);
+}
+
+[data-theme="dark"] .form input,
+[data-theme="dark"] .form select,
+[data-theme="dark"] .form textarea {
+    background: rgba(15, 15, 15, 0.8);
+    border-color: rgba(212, 165, 116, 0.2);
+    color: var(--text);
+}
+
+[data-theme="dark"] .form input:focus,
+[data-theme="dark"] .form select:focus,
+[data-theme="dark"] .form textarea:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(212, 165, 116, 0.15), 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .faq-question {
+    color: var(--text);
+}
+
+[data-theme="dark"] .faq-item {
+    background: var(--glass-bg);
+    border-color: rgba(212, 165, 116, 0.1);
+}
+
+[data-theme="dark"] .faq-item.active {
+    border-color: rgba(212, 165, 116, 0.2);
+}
+
+[data-theme="dark"] .footer {
+    background: var(--bg-alt);
+}
+
+[data-theme="dark"] .about-image .image-frame {
+    border-color: rgba(212, 165, 116, 0.2);
+}
+
+[data-theme="dark"] .portfolio-item .portfolio-image,
+[data-theme="dark"] .certificate-card .certificate-image {
+    background: var(--bg-alt);
+}
+
+[data-theme="dark"] .review-card .review-avatar {
+    background: linear-gradient(135deg, rgba(212, 165, 116, 0.3) 0%, rgba(184, 149, 106, 0.2) 100%);
+}
+
+[data-theme="dark"] .btn-cookie {
+    background: var(--gradient);
+}
+
+[data-theme="dark"] .cookie-banner {
+    background: var(--glass-bg);
+    border: 1px solid rgba(212, 165, 116, 0.15);
+}
+
+[data-theme="dark"] .loader {
+    background: var(--bg);
+}
+
+[data-theme="dark"] .map-container {
+    border-color: rgba(212, 165, 116, 0.15);
+}
+
+[data-theme="dark"] ::selection {
+    background: rgba(212, 165, 116, 0.3);
+    color: var(--text);
 }
 
 /* Typewriter Effect */
@@ -835,7 +949,7 @@ h1, h2, h3, h4 {
     padding: 45px 35px;
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-md);
-    transition: box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.4s ease, transform 0.1s ease;
+    transition: box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.4s ease, transform 0.1s ease, background 0.5s ease;
     position: relative;
     overflow: hidden;
     border: 1px solid var(--glass-border);
@@ -1001,7 +1115,7 @@ h1, h2, h3, h4 {
     padding: 35px;
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-sm);
-    transition: box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.4s ease, transform 0.1s ease;
+    transition: box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.4s ease, transform 0.1s ease, background 0.5s ease;
     border: 1px solid var(--glass-border);
     transform-style: preserve-3d;
 }
@@ -1250,6 +1364,7 @@ h1, h2, h3, h4 {
     border-radius: var(--radius-xl);
     box-shadow: var(--shadow-lg);
     border: 1px solid var(--glass-border);
+    transition: background 0.5s ease, border-color 0.3s ease;
 }
 
 .form-group {

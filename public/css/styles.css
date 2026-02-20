@@ -292,34 +292,6 @@ body::before {
     transform: rotate(15deg);
 }
 
-/* WhatsApp Button */
-.whatsapp-btn {
-    position: fixed;
-    bottom: 30px;
-    right: 20px;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-    box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
-    transition: all 0.3s ease;
-}
-
-.whatsapp-btn:hover {
-    transform: scale(1.1);
-    box-shadow: 0 6px 30px rgba(37, 211, 102, 0.5);
-}
-
-.whatsapp-btn svg {
-    width: 30px;
-    height: 30px;
-    fill: white;
-}
-
 /* Dark Theme */
 [data-theme="dark"] {
     --bg: #1a1a1a;

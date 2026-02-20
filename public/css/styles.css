@@ -433,6 +433,81 @@ body::before {
     color: var(--text);
 }
 
+[data-theme="dark"] .section-title {
+    color: var(--text);
+}
+
+[data-theme="dark"] .hero-title {
+    color: var(--text);
+}
+
+[data-theme="dark"] .hero-title span {
+    background: linear-gradient(135deg, #e8c9a0 0%, #d4a574 50%, #b8956a 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+[data-theme="dark"] .hero-subtitle {
+    color: var(--text-light);
+}
+
+[data-theme="dark"] .about-text {
+    color: var(--text-light);
+}
+
+[data-theme="dark"] .service-title {
+    color: var(--text);
+}
+
+[data-theme="dark"] .service-desc {
+    color: var(--text-light);
+}
+
+[data-theme="dark"] .portfolio-item .portfolio-image span {
+    color: var(--text-light);
+}
+
+[data-theme="dark"] .certificate-title {
+    color: var(--text);
+}
+
+[data-theme="dark"] .review-author {
+    color: var(--text);
+}
+
+[data-theme="dark"] .review-text {
+    color: var(--text-light);
+}
+
+[data-theme="dark"] .contacts-text {
+    color: var(--text-light);
+}
+
+[data-theme="dark"] .contact-label {
+    color: var(--text);
+}
+
+[data-theme="dark"] .contact-link {
+    color: var(--text-light);
+}
+
+[data-theme="dark"] .faq-question {
+    color: var(--text);
+}
+
+[data-theme="dark"] .faq-answer {
+    color: var(--text-light);
+}
+
+[data-theme="dark"] .stat-number {
+    color: var(--text);
+}
+
+[data-theme="dark"] .stat-label {
+    color: var(--text-light);
+}
+
 /* Typewriter Effect */
 .typewriter {
     overflow: hidden;

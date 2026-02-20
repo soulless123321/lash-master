@@ -46,6 +46,14 @@ async function initDB() {
         db.run('ALTER TABLE bookings ADD COLUMN time_to TEXT');
     } catch (e) {}
     
+    try {
+        db.run('ALTER TABLE bookings ADD COLUMN called INTEGER DEFAULT 0');
+    } catch (e) {}
+    
+    try {
+        db.run('ALTER TABLE bookings ADD COLUMN admin_comment TEXT');
+    } catch (e) {}
+    
     saveDB();
     
     return db;

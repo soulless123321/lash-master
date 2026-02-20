@@ -44,13 +44,29 @@
         <div class="aurora"></div>
     </div>
     
-    <!-- Floating Particles -->
+    <!-- Scroll Progress -->
+    <div class="scroll-progress" id="scrollProgress"></div>
+    
+    <!-- Particles -->
     <div class="particles" id="particles"></div>
     
     <!-- Theme Toggle -->
     <button class="theme-toggle" id="themeToggle" title="Сменить тему">
         <i class="bi bi-moon-fill"></i>
     </button>
+    
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toastContainer"></div>
+    
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+        <button class="lightbox-prev" onclick="lightboxPrev()">&#10094;</button>
+        <button class="lightbox-next" onclick="lightboxNext()">&#10095;</button>
+        <div class="lightbox-content">
+            <img id="lightboxImg" src="" alt="">
+        </div>
+    </div>
     
     <div class="cookie-banner" id="cookieBanner">
         <div class="cookie-content">
@@ -156,44 +172,49 @@
         <div class="container">
             <h2 class="section-title center">Портфолио</h2>
             <p class="section-subtitle center">Работы моих клиентов до и после процедур</p>
-            <div class="portfolio-grid">
-                <div class="portfolio-item">
-                    <div class="portfolio-image">
-                        <i class="bi bi-camera"></i>
-                        <span>До/После</span>
+            <div class="portfolio-slider" id="portfolioSlider">
+                <button class="slider-btn slider-prev" onclick="sliderPrev()">&#10094;</button>
+                <div class="slider-track" id="sliderTrack">
+                    <div class="portfolio-item" data-src="/img/work1.jpg">
+                        <div class="portfolio-image">
+                            <i class="bi bi-camera"></i>
+                            <span>До/После</span>
+                        </div>
+                    </div>
+                    <div class="portfolio-item" data-src="/img/work2.jpg">
+                        <div class="portfolio-image">
+                            <i class="bi bi-camera"></i>
+                            <span>До/После</span>
+                        </div>
+                    </div>
+                    <div class="portfolio-item" data-src="/img/work3.jpg">
+                        <div class="portfolio-image">
+                            <i class="bi bi-camera"></i>
+                            <span>До/После</span>
+                        </div>
+                    </div>
+                    <div class="portfolio-item" data-src="/img/work4.jpg">
+                        <div class="portfolio-image">
+                            <i class="bi bi-camera"></i>
+                            <span>До/После</span>
+                        </div>
+                    </div>
+                    <div class="portfolio-item" data-src="/img/work5.jpg">
+                        <div class="portfolio-image">
+                            <i class="bi bi-camera"></i>
+                            <span>До/После</span>
+                        </div>
+                    </div>
+                    <div class="portfolio-item" data-src="/img/work6.jpg">
+                        <div class="portfolio-image">
+                            <i class="bi bi-camera"></i>
+                            <span>До/После</span>
+                        </div>
                     </div>
                 </div>
-                <div class="portfolio-item">
-                    <div class="portfolio-image">
-                        <i class="bi bi-camera"></i>
-                        <span>До/После</span>
-                    </div>
-                </div>
-                <div class="portfolio-item">
-                    <div class="portfolio-image">
-                        <i class="bi bi-camera"></i>
-                        <span>До/После</span>
-                    </div>
-                </div>
-                <div class="portfolio-item">
-                    <div class="portfolio-image">
-                        <i class="bi bi-camera"></i>
-                        <span>До/После</span>
-                    </div>
-                </div>
-                <div class="portfolio-item">
-                    <div class="portfolio-image">
-                        <i class="bi bi-camera"></i>
-                        <span>До/После</span>
-                    </div>
-                </div>
-                <div class="portfolio-item">
-                    <div class="portfolio-image">
-                        <i class="bi bi-camera"></i>
-                        <span>До/После</span>
-                    </div>
-                </div>
+                <button class="slider-btn slider-next" onclick="sliderNext()">&#10095;</button>
             </div>
+            <div class="slider-dots" id="sliderDots"></div>
         </div>
     </section>
 

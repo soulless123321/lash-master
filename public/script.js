@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
-    // Typewriter Effect for Hero Title
+    // Typewriter Effect
     const heroTitle = document.querySelector('.hero-title span');
     if (heroTitle) {
         const text = heroTitle.textContent;
@@ -60,6 +60,163 @@ document.addEventListener('DOMContentLoaded', () => {
         
         setTimeout(typeWriter, 500);
     }
+    
+    // Scroll Progress
+    const scrollProgress = document.getElementById('scrollProgress');
+    window.addEventListener('scroll', () => {
+        const scrollTop = window.pageYOffset;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = (scrollTop / docHeight) * 100;
+        if (scrollProgress) {
+            scrollProgress.style.width = scrollPercent + '%';
+        }
+    });
+    
+    // Toast Notifications
+    window.showToast = function(message, type = 'success') {
+        const container = document.getElementById('toastContainer');
+        if (!container) return;
+        
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        toast.textContent = message;
+        container.appendChild(toast);
+        
+        setTimeout(() => toast.remove(), 3000);
+    };
+    
+    // Lightbox
+    let lightboxIndex = 0;
+    const lightboxItems = [];
+    
+    window.openLightbox = function(index) {
+        const lightbox = document.getElementById('lightbox');
+        const img = document.getElementById('lightboxImg');
+        
+        if (lightboxItems[index]) {
+            img.src = lightboxItems[index];
+            lightboxIndex = index;
+            lightbox.classList.add('active');
+        }
+    };
+    
+    window.closeLightbox = function() {
+        document.getElementById('lightbox').classList.remove('active');
+    };
+    
+    window.lightboxNext = function() {
+        lightboxIndex = (lightboxIndex + 1) % lightboxItems.length;
+        document.getElementById('lightboxImg').src = lightboxItems[lightboxIndex];
+    };
+    
+    window.lightboxPrev = function() {
+        lightboxIndex = (lightboxIndex - 1 + lightboxItems.length) % lightboxItems.length;
+        document.getElementById('lightboxImg').src = lightboxItems[lightboxIndex];
+    };
+    
+    // Portfolio Slider
+    let currentSlide = 0;
+    const sliderTrack = document.getElementById('sliderTrack');
+    const sliderDots = document.getElementById('sliderDots');
+    let itemsPerView = 3;
+    
+    function updateItemsPerView() {
+        if (window.innerWidth <= 480) itemsPerView = 1;
+        else if (window.innerWidth <= 768) itemsPerView = 2;
+        else itemsPerView = 3;
+    }
+    
+    window.sliderNext = function() {
+        updateItemsPerView();
+        const items = sliderTrack?.children.length || 0;
+        const maxSlide = Math.max(0, items - itemsPerView);
+        currentSlide = Math.min(currentSlide + 1, maxSlide);
+        updateSlider();
+    };
+    
+    window.sliderPrev = function() {
+        currentSlide = Math.max(currentSlide - 1, 0);
+        updateSlider();
+    };
+    
+    window.goToSlide = function(index) {
+        currentSlide = index;
+        updateSlider();
+    };
+    
+    function updateSlider() {
+        if (sliderTrack) {
+            sliderTrack.style.transform = `translateX(-${currentSlide * (100 / itemsPerView)}%)`;
+        }
+        updateDots();
+    }
+    
+    function updateDots() {
+        if (!sliderDots) return;
+        const dots = sliderDots.children;
+        for (let i = 0; i < dots.length; i++) {
+            dots[i].classList.toggle('active', i === currentSlide);
+        }
+    }
+    
+    function initSlider() {
+        updateItemsPerView();
+        
+        const portfolioItems = document.querySelectorAll('.portfolio-item');
+        portfolioItems.forEach((item, index) => {
+            const src = item.dataset.src;
+            if (src) lightboxItems.push(src);
+            
+            item.addEventListener('click', () => {
+                openLightbox(index);
+            });
+        });
+        
+        // Create dots
+        if (sliderDots && portfolioItems.length > 0) {
+            sliderDots.innerHTML = '';
+            const totalDots = Math.ceil(portfolioItems.length / itemsPerView);
+            for (let i = 0; i < totalDots; i++) {
+                const dot = document.createElement('div');
+                dot.className = `slider-dot ${i === 0 ? 'active' : ''}`;
+                dot.onclick = () => goToSlide(i);
+                sliderDots.appendChild(dot);
+            }
+        }
+    }
+    
+    initSlider();
+    window.addEventListener('resize', () => {
+        updateItemsPerView();
+        updateSlider();
+    });
+    
+    // Close lightbox on escape
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowRight') lightboxNext();
+        if (e.key === 'ArrowLeft') lightboxPrev();
+    });
+    
+    // Click outside lightbox to close
+    document.getElementById('lightbox')?.addEventListener('click', (e) => {
+        if (e.target.id === 'lightbox') closeLightbox();
+    });
+    
+    // Ripple Effect
+    document.querySelectorAll('.btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            const ripple = document.createElement('span');
+            ripple.className = 'ripple';
+            const rect = this.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+            ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
+            this.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 600);
+        });
+    });
     
     // Custom Cursor
     const cursor = document.createElement('div');
@@ -116,11 +273,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const menuToggle = document.querySelector('.menu-toggle');
     const navLinks = document.querySelector('.nav-links');
     
-    menuToggle.addEventListener('click', () => {
+    menuToggle?.addEventListener('click', () => {
         navLinks.classList.toggle('active');
     });
 
-    navLinks.querySelectorAll('a').forEach(link => {
+    navLinks?.querySelectorAll('a').forEach(link => {
         link.addEventListener('click', () => {
             navLinks.classList.remove('active');
         });
@@ -132,23 +289,96 @@ document.addEventListener('DOMContentLoaded', () => {
         const currentScroll = window.pageYOffset;
         
         if (currentScroll > 50) {
-            header.classList.add('scrolled');
+            header?.classList.add('scrolled');
         } else {
-            header.classList.remove('scrolled');
+            header?.classList.remove('scrolled');
         }
     });
 
+    // Form with validation and localStorage
     const form = document.getElementById('bookingForm');
     
-    form.addEventListener('submit', async (e) => {
+    // Load saved data
+    const savedName = localStorage.getItem('bookingName');
+    const savedPhone = localStorage.getItem('bookingPhone');
+    if (savedName) form?.querySelector('[name="name"]').value = savedName;
+    if (savedPhone) form?.querySelector('[name="phone"]').value = savedPhone;
+    
+    // Validation
+    function validateField(field) {
+        const parent = field.parentElement;
+        const value = field.value.trim();
+        let isValid = true;
+        let message = '';
+        
+        if (field.required && !value) {
+            isValid = false;
+            message = 'Это поле обязательно';
+        } else if (field.name === 'phone' && value) {
+            const phoneRegex = /^[\d\s\-\+\(\)]{10,}$/;
+            if (!phoneRegex.test(value)) {
+                isValid = false;
+                message = 'Введите корректный номер телефона';
+            }
+        } else if (field.name === 'name' && value && value.length < 2) {
+            isValid = false;
+            message = 'Имя должно содержать минимум 2 символа';
+        }
+        
+        parent.classList.remove('error', 'success');
+        
+        let errorEl = parent.querySelector('.error-message');
+        if (!errorEl) {
+            errorEl = document.createElement('span');
+            errorEl.className = 'error-message';
+            parent.appendChild(errorEl);
+        }
+        
+        if (!isValid) {
+            parent.classList.add('error');
+            errorEl.textContent = message;
+        } else if (value) {
+            parent.classList.add('success');
+            errorEl.textContent = '';
+        }
+        
+        return isValid;
+    }
+    
+    form?.querySelectorAll('input, select, textarea').forEach(field => {
+        field.addEventListener('blur', () => validateField(field));
+        field.addEventListener('input', () => {
+            if (field.parentElement.classList.contains('error')) {
+                validateField(field);
+            }
+        });
+    });
+    
+    form?.addEventListener('submit', async (e) => {
         e.preventDefault();
+        
+        // Validate all fields
+        let isFormValid = true;
+        form.querySelectorAll('input[required], select[required]').forEach(field => {
+            if (!validateField(field)) isFormValid = false;
+        });
+        
+        if (!isFormValid) {
+            showToast('Пожалуйста, заполните все поля правильно', 'error');
+            return;
+        }
         
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
         
+        // Save to localStorage
+        localStorage.setItem('bookingName', data.name);
+        localStorage.setItem('bookingPhone', data.phone);
+        
         const submitBtn = form.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
         submitBtn.disabled = true;
-        submitBtn.textContent = 'Отправка...';
+        submitBtn.innerHTML = '<span class="spinner"></span>Отправка...';
         
         try {
             const response = await fetch('/api/bookings', {
@@ -162,20 +392,24 @@ document.addEventListener('DOMContentLoaded', () => {
             const result = await response.json();
             
             if (result.success) {
-                alert('Спасибо! Ваша заявка отправлена. Мы свяжемся с вами для согласования времени.');
+                showToast('Спасибо! Ваша заявка отправлена. Мы свяжемся с вами для согласования времени.', 'success');
                 form.reset();
+                // Restore saved data
+                form.querySelector('[name="name"]').value = data.name;
+                form.querySelector('[name="phone"]').value = data.phone;
             } else {
-                alert('Ошибка: ' + result.error);
+                showToast(result.error || 'Ошибка отправки', 'error');
             }
         } catch (error) {
-            alert('Ошибка отправки. Попробуйте позже.');
+            showToast('Ошибка соединения. Попробуйте позже.', 'error');
             console.error(error);
         }
         
         submitBtn.disabled = false;
-        submitBtn.textContent = 'Записаться на приём';
+        submitBtn.textContent = originalText;
     });
 
+    // FAQ Accordion
     document.querySelectorAll('.faq-question').forEach(question => {
         question.addEventListener('click', () => {
             const item = question.parentElement;
@@ -199,7 +433,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     if (localStorage.getItem('cookiesAccepted') !== 'true') {
-        document.getElementById('cookieBanner').classList.add('show');
+        document.getElementById('cookieBanner')?.classList.add('show');
     }
 
     const observerOptions = {
@@ -228,7 +462,7 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const target = document.querySelector(this.getAttribute('href'));
             if (target) {
-                const headerHeight = header.offsetHeight;
+                const headerHeight = header?.offsetHeight || 0;
                 const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - headerHeight;
                 
                 window.scrollTo({

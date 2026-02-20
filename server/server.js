@@ -149,6 +149,114 @@ app.post('/api/bookings/:id/confirm', async (req, res) => {
     }
 });
 
+app.put('/api/bookings/:id/status', async (req, res) => {
+    if (!checkAuth(req)) {
+        return res.status(401).json({ error: 'Требуется авторизация' });
+    }
+    
+    try {
+        const { status } = req.body;
+        const { getDB, saveDB } = await getDb();
+        const database = getDB();
+        
+        database.run('UPDATE bookings SET status = ? WHERE id = ?', [status, req.params.id]);
+        saveDB();
+        
+        res.json({ success: true });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.put('/api/bookings/:id/called', async (req, res) => {
+    if (!checkAuth(req)) {
+        return res.status(401).json({ error: 'Требуется авторизация' });
+    }
+    
+    try {
+        const { getDB, saveDB } = await getDb();
+        const database = getDB();
+        
+        database.run('UPDATE bookings SET called = 1 WHERE id = ?', [req.params.id]);
+        saveDB();
+        
+        res.json({ success: true });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.put('/api/bookings/:id/comment', async (req, res) => {
+    if (!checkAuth(req)) {
+        return res.status(401).json({ error: 'Требуется авторизация' });
+    }
+    
+    try {
+        const { comment } = req.body;
+        const { getDB, saveDB } = await getDb();
+        const database = getDB();
+        
+        database.run('UPDATE bookings SET admin_comment = ? WHERE id = ?', [comment, req.params.id]);
+        saveDB();
+        
+        res.json({ success: true });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.get('/api/bookings/export', async (req, res) => {
+    if (!checkAuth(req)) {
+        return res.status(401).json({ error: 'Требуется авторизация' });
+    }
+    
+    try {
+        const { getDB } = await getDb();
+        const database = getDB();
+        const results = database.exec('SELECT * FROM bookings ORDER BY created_at DESC');
+        
+        if (results.length === 0) {
+            return res.send('ID,Имя,Телефон,Услуга,Дата,Время,Статус,Комментарий клиента,Комментарий админа,Создано\n');
+        }
+        
+        const columns = results[0].columns;
+        const values = results[0].values;
+        
+        const serviceNames = {
+            'lamination': 'Ламинирование ресниц',
+            'coloring': 'Окрашивание ресниц',
+            'extension': 'Наращивание ресниц'
+        };
+        
+        const statusNames = {
+            'new': 'Новая',
+            'in_progress': 'В работе',
+            'confirmed': 'Подтверждена',
+            'completed': 'Выполнена',
+            'cancelled': 'Отменена'
+        };
+        
+        let csv = 'ID,Имя,Телефон,Услуга,Дата,Время начала,Время конца,Статус,Перезвонил,Комментарий клиента,Комментарий админа,Создано\n';
+        
+        values.forEach(row => {
+            const obj = {};
+            columns.forEach((col, i) => obj[col] = row[i]);
+            
+            const service = serviceNames[obj.service] || obj.service;
+            const status = statusNames[obj.status] || obj.status || 'Новая';
+            const called = obj.called ? 'Да' : 'Нет';
+            
+            csv += `"${obj.id}","${obj.name}","${obj.phone}","${service}","${obj.date || ''}","${obj.time_from || ''}","${obj.time_to || ''}","${status}","${called}","${(obj.message || '').replace(/"/g, '""')}","${(obj.admin_comment || '').replace(/"/g, '""')}","${obj.created_at}"\n`;
+        });
+        
+        res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+        res.setHeader('Content-Disposition', 'attachment; filename=bookings.csv');
+        res.send('\ufeff' + csv);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 app.post('/api/bookings', async (req, res) => {
     try {
         console.log('Получена заявка:', req.body);

@@ -241,6 +241,79 @@
             background: #4caf50;
         }
         
+        .booking-card.completed::before {
+            background: #2196f3;
+        }
+        
+        .booking-card.called {
+            border-left: 3px solid #4caf50;
+        }
+        
+        .status-select {
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            font-size: 13px;
+            cursor: pointer;
+            background: white;
+        }
+        
+        .called-badge {
+            background: #e8f5e9;
+            color: #388e3c;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .admin-comment {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+        
+        .admin-comment input {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 13px;
+        }
+        
+        .btn-comment {
+            background: #f5f5f5;
+            border: none;
+            padding: 10px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .btn-comment:hover {
+            background: #e0e0e0;
+        }
+        
+        .btn-called {
+            background: #e8f5e9;
+            color: #388e3c;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+        
+        .btn-called:hover {
+            background: #c8e6c9;
+        }
+        
         .booking-assign {
             background: #fff8e1;
             padding: 15px;
@@ -467,6 +540,9 @@
     <header class="header">
         <div class="logo">Lash<span>Master</span> | Админ</div>
         <div class="header-actions">
+            <button class="btn-header" onclick="exportCSV()">
+                <i class="bi bi-download"></i> Экспорт CSV
+            </button>
             <button class="btn-header" onclick="loadBookings()">
                 <i class="bi bi-arrow-clockwise"></i> Обновить
             </button>
@@ -512,6 +588,19 @@
                 <option value="today">Сегодня</option>
                 <option value="week">За неделю</option>
                 <option value="month">За месяц</option>
+            </select>
+            <select class="filter-select" id="statusFilter">
+                <option value="">Все статусы</option>
+                <option value="new">Новые</option>
+                <option value="in_progress">В работе</option>
+                <option value="confirmed">Подтверждены</option>
+                <option value="completed">Выполнены</option>
+                <option value="cancelled">Отменены</option>
+            </select>
+            <select class="filter-select" id="sortFilter">
+                <option value="newest">Сначала новые</option>
+                <option value="oldest">Сначала старые</option>
+                <option value="name">По имени (А-Я)</option>
             </select>
         </div>
         
@@ -593,6 +682,8 @@
             const search = document.getElementById('searchInput').value.toLowerCase();
             const service = document.getElementById('serviceFilter').value;
             const dateFilter = document.getElementById('dateFilter').value;
+            const statusFilter = document.getElementById('statusFilter').value;
+            const sortFilter = document.getElementById('sortFilter').value;
             
             let filtered = allBookings;
             
@@ -611,6 +702,23 @@
                 filtered = filtered.filter(b => isToday(b.created_at));
             } else if (dateFilter === 'week') {
                 filtered = filtered.filter(b => isThisWeek(b.created_at));
+            } else if (dateFilter === 'month') {
+                const monthAgo = new Date();
+                monthAgo.setMonth(monthAgo.getMonth() - 1);
+                filtered = filtered.filter(b => new Date(b.created_at) >= monthAgo);
+            }
+            
+            if (statusFilter) {
+                filtered = filtered.filter(b => (b.status || 'new') === statusFilter);
+            }
+            
+            // Sort
+            if (sortFilter === 'newest') {
+                filtered.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+            } else if (sortFilter === 'oldest') {
+                filtered.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+            } else if (sortFilter === 'name') {
+                filtered.sort((a, b) => a.name.localeCompare(b.name, 'ru'));
             }
             
             renderBookings(filtered);
@@ -638,7 +746,7 @@
             }
             
             list.innerHTML = bookings.map(booking => `
-                <div class="booking-card ${booking.status === 'confirmed' ? 'confirmed' : ''}">
+                <div class="booking-card ${booking.status === 'confirmed' ? 'confirmed' : ''} ${booking.status === 'completed' ? 'completed' : ''} ${booking.called ? 'called' : ''}">
                     <div class="booking-header">
                         <div class="booking-user">
                             <div class="booking-avatar">${getInitials(booking.name)}</div>
@@ -647,19 +755,26 @@
                                 <div class="booking-id">#${booking.id}</div>
                             </div>
                         </div>
-                        <span class="booking-status ${booking.status === 'confirmed' ? 'status-confirmed' : 'status-new'}">
-                            ${booking.status === 'confirmed' ? 'Подтверждена' : 'Новая'}
-                        </span>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            ${booking.called ? '<span class="called-badge"><i class="bi bi-telephone-check"></i> Перезвонил</span>' : ''}
+                            <select class="status-select" onchange="updateStatus(${booking.id}, this.value)">
+                                <option value="new" ${booking.status === 'new' || !booking.status ? 'selected' : ''}>Новая</option>
+                                <option value="in_progress" ${booking.status === 'in_progress' ? 'selected' : ''}>В работе</option>
+                                <option value="confirmed" ${booking.status === 'confirmed' ? 'selected' : ''}>Подтверждена</option>
+                                <option value="completed" ${booking.status === 'completed' ? 'selected' : ''}>Выполнена</option>
+                                <option value="cancelled" ${booking.status === 'cancelled' ? 'selected' : ''}>Отменена</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="booking-body">
                         <div class="booking-service">
                             <i class="bi bi-scissors"></i>
                             ${serviceNames[booking.service] || booking.service}
                         </div>
-                        ${booking.status === 'confirmed' ? `
+                        ${booking.status === 'confirmed' || booking.date ? `
                             <div class="booking-date-time">
                                 <span><i class="bi bi-calendar3"></i> ${booking.date}</span>
-                                <span><i class="bi bi-clock"></i> ${booking.time_from} - ${booking.time_to}</span>
+                                ${booking.time_from && booking.time_to ? `<span><i class="bi bi-clock"></i> ${booking.time_from} - ${booking.time_to}</span>` : ''}
                             </div>
                         ` : `
                             <div class="booking-assign">
@@ -706,11 +821,18 @@
                             ${booking.phone}
                         </div>
                         ${booking.message ? `<div class="booking-message">"${booking.message}"</div>` : ''}
+                        <div class="admin-comment">
+                            <input type="text" id="comment-${booking.id}" placeholder="Ваш комментарий..." value="${booking.admin_comment || ''}">
+                            <button class="btn-comment" onclick="saveComment(${booking.id})">💾</button>
+                        </div>
                     </div>
                     <div class="booking-footer">
                         <a href="tel:${booking.phone}" class="btn btn-phone">
                             <i class="bi bi-telephone"></i> Позвонить
                         </a>
+                        ${!booking.called ? `<button class="btn btn-called" onclick="markCalled(${booking.id})">
+                            <i class="bi bi-check-lg"></i> Перезвонил
+                        </button>` : ''}
                         <button class="btn btn-delete" onclick="deleteBooking(${booking.id})">
                             <i class="bi bi-trash"></i> Удалить
                         </button>
@@ -798,9 +920,90 @@
             }
         }
         
+        async function updateStatus(id, status) {
+            try {
+                const response = await fetch('/api/bookings/' + id + '/status', {
+                    method: 'PUT',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + localStorage.getItem('adminToken')
+                    },
+                    body: JSON.stringify({ status })
+                });
+                
+                if (response.ok) {
+                    showNotification('Статус обновлён');
+                    loadBookings();
+                } else {
+                    showNotification('Ошибка обновления статуса', 'error');
+                }
+            } catch (error) {
+                showNotification('Ошибка', 'error');
+            }
+        }
+        
+        async function markCalled(id) {
+            try {
+                const response = await fetch('/api/bookings/' + id + '/called', {
+                    method: 'PUT',
+                    headers: { 'Authorization': 'Bearer ' + localStorage.getItem('adminToken') }
+                });
+                
+                if (response.ok) {
+                    showNotification('Отмечено как перезвонивший');
+                    loadBookings();
+                }
+            } catch (error) {
+                showNotification('Ошибка', 'error');
+            }
+        }
+        
+        async function saveComment(id) {
+            const comment = document.getElementById('comment-' + id).value;
+            
+            try {
+                const response = await fetch('/api/bookings/' + id + '/comment', {
+                    method: 'PUT',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + localStorage.getItem('adminToken')
+                    },
+                    body: JSON.stringify({ comment })
+                });
+                
+                if (response.ok) {
+                    showNotification('Комментарий сохранён');
+                }
+            } catch (error) {
+                showNotification('Ошибка сохранения', 'error');
+            }
+        }
+        
+        async function exportCSV() {
+            try {
+                const response = await fetch('/api/bookings/export', {
+                    headers: { 'Authorization': 'Bearer ' + localStorage.getItem('adminToken') }
+                });
+                
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'bookings_' + new Date().toISOString().split('T')[0] + '.csv';
+                a.click();
+                window.URL.revokeObjectURL(url);
+                
+                showNotification('Файл скачан');
+            } catch (error) {
+                showNotification('Ошибка экспорта', 'error');
+            }
+        }
+        
         document.getElementById('searchInput').addEventListener('input', filterBookings);
         document.getElementById('serviceFilter').addEventListener('change', filterBookings);
         document.getElementById('dateFilter').addEventListener('change', filterBookings);
+        document.getElementById('statusFilter').addEventListener('change', filterBookings);
+        document.getElementById('sortFilter').addEventListener('change', filterBookings);
         
         loadBookings();
         setInterval(loadBookings, 30000);

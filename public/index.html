@@ -19,14 +19,22 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="/css/styles.css">
+    <script>
+        (function() {
+            const theme = localStorage.getItem('theme');
+            if (theme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        })();
+    </script>
 </head>
 <body>
     <!-- Loader -->
     <div class="loader" id="loader">
         <div class="loader-content">
             <div class="loader-icon">
-                <svg viewBox="0 0 100 100" width="60" height="60">
-                    <ellipse cx="50" cy="50" rx="40" ry="28" fill="none" stroke="#d4a574" stroke-width="2"/>
+                <svg width="60" height="60" viewBox="0 0 100 100">
+                    <ellipse cx="50" cy="50" rx="40" ry="28" fill="white" stroke="#d4a574" stroke-width="3"/>
                     <circle cx="50" cy="50" r="18" fill="#d4a574"/>
                     <circle cx="50" cy="50" r="9" fill="#1a1a1a"/>
                     <circle cx="44" cy="44" r="4" fill="white" opacity="0.7"/>
@@ -245,7 +253,7 @@
                         <div class="review-author">Елена</div>
                     </div>
                     <div class="review-stars"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
-                    <p class="review-text">Делала ламинирование + ботокс. Эффект превзошёл все ожидания! Ресницы стали гуще и длиннее.</p>
+                    <p class="review-text">Делала ламинирование + окрашивание. Эффект превзошёл все ожидания! Ресницы стали гуще и длиннее.</p>
                 </div>
                 <div class="review-card">
                     <div class="review-header">
@@ -253,7 +261,7 @@
                         <div class="review-author">Ольга</div>
                     </div>
                     <div class="review-stars"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
-                    <p class="review-text">Отличный мастер, чисто и уютно. Сделала идеальную укладку бровей — теперь не нужно каждое утро их расчёсывать.</p>
+                    <p class="review-text">Отличный мастер, чисто и уютно. Ресницы после ламинирования стали идеально подкрученными — теперь каждое утро начинается с красивого взгляда.</p>
                 </div>
             </div>
         </div>
@@ -276,7 +284,7 @@
                         <i class="bi bi-patch-check"></i>
                         <span>Диплом</span>
                     </div>
-                    <div class="certificate-title">Диплом бровиста-колориста</div>
+                    <div class="certificate-title">Сертификат по окрашиванию ресниц</div>
                 </div>
                 <div class="certificate-card">
                     <div class="certificate-image">

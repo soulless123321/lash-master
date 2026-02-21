@@ -67,9 +67,14 @@ body::before {
     border-radius: 50%;
     position: fixed;
     pointer-events: none;
-    z-index: 10000;
+    z-index: 99999;
     transition: transform 0.15s ease, background 0.15s ease;
     transform: translate(-50%, -50%);
+    opacity: 0;
+}
+
+.cursor.visible {
+    opacity: 1;
 }
 
 .cursor.hover {
@@ -84,16 +89,21 @@ body::before {
     border-radius: 50%;
     position: fixed;
     pointer-events: none;
-    z-index: 10001;
+    z-index: 99998;
     transform: translate(-50%, -50%);
+    opacity: 0;
+}
+
+.cursor-dot.visible {
+    opacity: 1;
 }
 
 @media (hover: none) and (pointer: coarse) {
     .cursor, .cursor-dot {
-        display: none;
+        display: none !important;
     }
     * {
-        cursor: auto;
+        cursor: auto !important;
     }
 }
 
@@ -108,21 +118,26 @@ body::before {
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 20000;
-    transition: opacity 0.5s ease, visibility 0.5s ease;
+    z-index: 999999;
+    opacity: 1;
+    transition: opacity 0.5s ease;
 }
 
 .loader.hidden {
     opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
+    z-index: -1;
 }
 
 .loader-content {
     text-align: center;
 }
 
-.loader-icon {
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.loader-icon svg {
     animation: pulse 1.5s ease-in-out infinite;
 }
 
@@ -130,6 +145,7 @@ body::before {
     margin-top: 20px;
     color: var(--primary);
     font-weight: 500;
+    font-size: 16px;
     animation: fadeInOut 1.5s ease-in-out infinite;
 }
 
@@ -562,22 +578,6 @@ h1, h2, h3, h4 {
     max-width: 1250px;
     margin: 0 auto;
     padding: 0 24px;
-}
-
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); }
 }
 
 @keyframes shimmer {

@@ -1,15 +1,13 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // Hide loader immediately
-    const loader = document.getElementById('loader');
-    if (loader) {
-        setTimeout(() => loader.style.display = 'none', 100);
-    }
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(function() {
+        var loader = document.getElementById('loader');
+        if (loader) loader.remove();
+    }, 1200);
     
-    // Particles
-    const particlesContainer = document.getElementById('particles');
+    var particlesContainer = document.getElementById('particles');
     if (particlesContainer) {
-        for (let i = 0; i < 20; i++) {
-            const particle = document.createElement('div');
+        for (var i = 0; i < 20; i++) {
+            var particle = document.createElement('div');
             particle.className = 'particle';
             particle.style.left = Math.random() * 100 + '%';
             particle.style.top = Math.random() * 100 + '%';
@@ -19,40 +17,40 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
-    // Theme Toggle
-    const themeToggle = document.getElementById('themeToggle');
-    const savedTheme = localStorage.getItem('theme');
+    var themeToggle = document.getElementById('themeToggle');
+    var savedTheme = localStorage.getItem('theme');
     if (savedTheme) {
         document.documentElement.setAttribute('data-theme', savedTheme);
         updateThemeIcon(savedTheme);
     }
     
-    themeToggle?.addEventListener('click', () => {
-        const currentTheme = document.documentElement.getAttribute('data-theme');
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', newTheme);
-        localStorage.setItem('theme', newTheme);
-        updateThemeIcon(newTheme);
-    });
+    if (themeToggle) {
+        themeToggle.addEventListener('click', function() {
+            var currentTheme = document.documentElement.getAttribute('data-theme');
+            var newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        });
+    }
     
     function updateThemeIcon(theme) {
-        const icon = themeToggle?.querySelector('i');
+        var icon = themeToggle ? themeToggle.querySelector('i') : null;
         if (icon) {
             icon.className = theme === 'dark' ? 'bi bi-sun-fill' : 'bi bi-moon-fill';
         }
     }
     
-    // Typewriter Effect
-    const heroTitle = document.querySelector('.hero-title span');
+    var heroTitle = document.querySelector('.hero-title span');
     if (heroTitle) {
-        const text = heroTitle.textContent;
+        var text = heroTitle.textContent;
         heroTitle.textContent = '';
-        let i = 0;
+        var charIndex = 0;
         
         function typeWriter() {
-            if (i < text.length) {
-                heroTitle.textContent += text.charAt(i);
-                i++;
+            if (charIndex < text.length) {
+                heroTitle.textContent += text.charAt(charIndex);
+                charIndex++;
                 setTimeout(typeWriter, 80);
             }
         }
@@ -60,37 +58,35 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(typeWriter, 500);
     }
     
-    // Scroll Progress
-    const scrollProgress = document.getElementById('scrollProgress');
-    window.addEventListener('scroll', () => {
-        const scrollTop = window.pageYOffset;
-        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-        const scrollPercent = (scrollTop / docHeight) * 100;
+    var scrollProgress = document.getElementById('scrollProgress');
+    window.addEventListener('scroll', function() {
+        var scrollTop = window.pageYOffset;
+        var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        var scrollPercent = (scrollTop / docHeight) * 100;
         if (scrollProgress) {
             scrollProgress.style.width = scrollPercent + '%';
         }
     });
     
-    // Toast Notifications
-    window.showToast = function(message, type = 'success') {
-        const container = document.getElementById('toastContainer');
+    window.showToast = function(message, type) {
+        type = type || 'success';
+        var container = document.getElementById('toastContainer');
         if (!container) return;
         
-        const toast = document.createElement('div');
-        toast.className = `toast ${type}`;
+        var toast = document.createElement('div');
+        toast.className = 'toast ' + type;
         toast.textContent = message;
         container.appendChild(toast);
         
-        setTimeout(() => toast.remove(), 3000);
+        setTimeout(function() { toast.remove(); }, 3000);
     };
     
-    // Lightbox
-    let lightboxIndex = 0;
-    const lightboxItems = [];
+    var lightboxIndex = 0;
+    var lightboxItems = [];
     
     window.openLightbox = function(index) {
-        const lightbox = document.getElementById('lightbox');
-        const img = document.getElementById('lightboxImg');
+        var lightbox = document.getElementById('lightbox');
+        var img = document.getElementById('lightboxImg');
         
         if (lightboxItems[index]) {
             img.src = lightboxItems[index];
@@ -113,11 +109,10 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('lightboxImg').src = lightboxItems[lightboxIndex];
     };
     
-    // Portfolio Slider
-    let currentSlide = 0;
-    const sliderTrack = document.getElementById('sliderTrack');
-    const sliderDots = document.getElementById('sliderDots');
-    let itemsPerView = 3;
+    var currentSlide = 0;
+    var sliderTrack = document.getElementById('sliderTrack');
+    var sliderDots = document.getElementById('sliderDots');
+    var itemsPerView = 3;
     
     function updateItemsPerView() {
         if (window.innerWidth <= 480) itemsPerView = 1;
@@ -127,8 +122,8 @@ document.addEventListener('DOMContentLoaded', () => {
     
     window.sliderNext = function() {
         updateItemsPerView();
-        const items = sliderTrack?.children.length || 0;
-        const maxSlide = Math.max(0, items - itemsPerView);
+        var items = sliderTrack ? sliderTrack.children.length : 0;
+        var maxSlide = Math.max(0, items - itemsPerView);
         currentSlide = Math.min(currentSlide + 1, maxSlide);
         updateSlider();
     };
@@ -145,176 +140,212 @@ document.addEventListener('DOMContentLoaded', () => {
     
     function updateSlider() {
         if (sliderTrack) {
-            sliderTrack.style.transform = `translateX(-${currentSlide * (100 / itemsPerView)}%)`;
+            sliderTrack.style.transform = 'translateX(-' + (currentSlide * (100 / itemsPerView)) + '%)';
         }
         updateDots();
     }
     
     function updateDots() {
         if (!sliderDots) return;
-        const dots = sliderDots.children;
-        for (let i = 0; i < dots.length; i++) {
-            dots[i].classList.toggle('active', i === currentSlide);
+        var dots = sliderDots.children;
+        for (var i = 0; i < dots.length; i++) {
+            if (i === currentSlide) {
+                dots[i].classList.add('active');
+            } else {
+                dots[i].classList.remove('active');
+            }
         }
     }
     
     function initSlider() {
         updateItemsPerView();
         
-        const portfolioItems = document.querySelectorAll('.portfolio-item');
-        portfolioItems.forEach((item, index) => {
-            const src = item.dataset.src;
-            if (src) lightboxItems.push(src);
-            
-            item.addEventListener('click', () => {
-                openLightbox(index);
-            });
-        });
+        var portfolioItems = document.querySelectorAll('.portfolio-item');
+        for (var i = 0; i < portfolioItems.length; i++) {
+            (function(index) {
+                var item = portfolioItems[index];
+                var src = item.dataset.src;
+                if (src) lightboxItems.push(src);
+                
+                item.addEventListener('click', function() {
+                    openLightbox(index);
+                });
+            })(i);
+        }
         
-        // Create dots
         if (sliderDots && portfolioItems.length > 0) {
             sliderDots.innerHTML = '';
-            const totalDots = Math.ceil(portfolioItems.length / itemsPerView);
-            for (let i = 0; i < totalDots; i++) {
-                const dot = document.createElement('div');
-                dot.className = `slider-dot ${i === 0 ? 'active' : ''}`;
-                dot.onclick = () => goToSlide(i);
+            var totalDots = Math.ceil(portfolioItems.length / itemsPerView);
+            for (var i = 0; i < totalDots; i++) {
+                var dot = document.createElement('div');
+                dot.className = 'slider-dot' + (i === 0 ? ' active' : '');
+                dot.onclick = (function(idx) {
+                    return function() { goToSlide(idx); };
+                })(i);
                 sliderDots.appendChild(dot);
             }
         }
     }
     
     initSlider();
-    window.addEventListener('resize', () => {
+    window.addEventListener('resize', function() {
         updateItemsPerView();
         updateSlider();
     });
     
-    // Close lightbox on escape
-    document.addEventListener('keydown', (e) => {
+    document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') closeLightbox();
         if (e.key === 'ArrowRight') lightboxNext();
         if (e.key === 'ArrowLeft') lightboxPrev();
     });
     
-    // Click outside lightbox to close
-    document.getElementById('lightbox')?.addEventListener('click', (e) => {
-        if (e.target.id === 'lightbox') closeLightbox();
-    });
+    var lightboxEl = document.getElementById('lightbox');
+    if (lightboxEl) {
+        lightboxEl.addEventListener('click', function(e) {
+            if (e.target.id === 'lightbox') closeLightbox();
+        });
+    }
     
-    // Ripple Effect
-    document.querySelectorAll('.btn').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            const ripple = document.createElement('span');
+    var btns = document.querySelectorAll('.btn');
+    for (var i = 0; i < btns.length; i++) {
+        btns[i].addEventListener('click', function(e) {
+            var ripple = document.createElement('span');
             ripple.className = 'ripple';
-            const rect = this.getBoundingClientRect();
-            const size = Math.max(rect.width, rect.height);
-            ripple.style.width = ripple.style.height = size + 'px';
+            var rect = this.getBoundingClientRect();
+            var size = Math.max(rect.width, rect.height);
+            ripple.style.width = size + 'px';
+            ripple.style.height = size + 'px';
             ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
             ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
             this.appendChild(ripple);
-            setTimeout(() => ripple.remove(), 600);
+            setTimeout(function() { ripple.remove(); }, 600);
         });
-    });
-    
-    // Custom Cursor
-    const cursor = document.createElement('div');
-    cursor.className = 'cursor';
-    document.body.appendChild(cursor);
-    
-    const cursorDot = document.createElement('div');
-    cursorDot.className = 'cursor-dot';
-    document.body.appendChild(cursorDot);
-    
-    let mouseX = 0, mouseY = 0;
-    let cursorX = 0, cursorY = 0;
-    
-    document.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-        cursorDot.style.left = mouseX + 'px';
-        cursorDot.style.top = mouseY + 'px';
-    });
-    
-    function animateCursor() {
-        cursorX += (mouseX - cursorX) * 0.1;
-        cursorY += (mouseY - cursorY) * 0.1;
-        cursor.style.left = cursorX + 'px';
-        cursor.style.top = cursorY + 'px';
-        requestAnimationFrame(animateCursor);
     }
-    animateCursor();
     
-    document.querySelectorAll('a, button, .service-card, .review-card, .portfolio-item').forEach(el => {
-        el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-        el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
-    });
+    var isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
     
-    // 3D Tilt Effect
-    document.querySelectorAll('.service-card, .review-card').forEach(card => {
-        card.addEventListener('mousemove', (e) => {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            const rotateX = (y - centerY) / 15;
-            const rotateY = (centerX - x) / 15;
+    if (!isTouchDevice) {
+        var cursor = document.createElement('div');
+        cursor.className = 'cursor';
+        document.body.appendChild(cursor);
+        
+        var cursorDot = document.createElement('div');
+        cursorDot.className = 'cursor-dot';
+        document.body.appendChild(cursorDot);
+        
+        var mouseX = window.innerWidth / 2;
+        var mouseY = window.innerHeight / 2;
+        var cursorX = mouseX;
+        var cursorY = mouseY;
+        var isCursorVisible = false;
+        
+        document.addEventListener('mousemove', function(e) {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
             
-            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+            if (!isCursorVisible) {
+                cursor.classList.add('visible');
+                cursorDot.classList.add('visible');
+                isCursorVisible = true;
+            }
+            
+            cursorDot.style.left = mouseX + 'px';
+            cursorDot.style.top = mouseY + 'px';
         });
         
-        card.addEventListener('mouseleave', () => {
-            card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
+        document.addEventListener('mouseleave', function() {
+            cursor.classList.remove('visible');
+            cursorDot.classList.remove('visible');
+            isCursorVisible = false;
         });
-    });
+        
+        function animateCursor() {
+            cursorX += (mouseX - cursorX) * 0.15;
+            cursorY += (mouseY - cursorY) * 0.15;
+            cursor.style.left = cursorX + 'px';
+            cursor.style.top = cursorY + 'px';
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+        
+        var hoverElements = document.querySelectorAll('a, button, .service-card, .review-card, .portfolio-item');
+        for (var i = 0; i < hoverElements.length; i++) {
+            hoverElements[i].addEventListener('mouseenter', function() {
+                cursor.classList.add('hover');
+            });
+            hoverElements[i].addEventListener('mouseleave', function() {
+                cursor.classList.remove('hover');
+            });
+        }
+    }
     
-    const menuToggle = document.querySelector('.menu-toggle');
-    const navLinks = document.querySelector('.nav-links');
-    
-    menuToggle?.addEventListener('click', () => {
-        navLinks.classList.toggle('active');
-    });
-
-    navLinks?.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
-            navLinks.classList.remove('active');
+    var tiltCards = document.querySelectorAll('.service-card, .review-card');
+    for (var i = 0; i < tiltCards.length; i++) {
+        tiltCards[i].addEventListener('mousemove', function(e) {
+            var rect = this.getBoundingClientRect();
+            var x = e.clientX - rect.left;
+            var y = e.clientY - rect.top;
+            var centerX = rect.width / 2;
+            var centerY = rect.height / 2;
+            var rotateX = (y - centerY) / 15;
+            var rotateY = (centerX - x) / 15;
+            
+            this.style.transform = 'perspective(1000px) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg) scale3d(1.02, 1.02, 1.02)';
         });
-    });
-
-    const header = document.querySelector('.header');
+        
+        tiltCards[i].addEventListener('mouseleave', function() {
+            this.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
+        });
+    }
     
-    window.addEventListener('scroll', () => {
-        const currentScroll = window.pageYOffset;
+    var menuToggle = document.querySelector('.menu-toggle');
+    var navLinks = document.querySelector('.nav-links');
+    
+    if (menuToggle) {
+        menuToggle.addEventListener('click', function() {
+            navLinks.classList.toggle('active');
+        });
+    }
+
+    if (navLinks) {
+        var navLinkItems = navLinks.querySelectorAll('a');
+        for (var i = 0; i < navLinkItems.length; i++) {
+            navLinkItems[i].addEventListener('click', function() {
+                navLinks.classList.remove('active');
+            });
+        }
+    }
+
+    var header = document.querySelector('.header');
+    
+    window.addEventListener('scroll', function() {
+        var currentScroll = window.pageYOffset;
         
         if (currentScroll > 50) {
-            header?.classList.add('scrolled');
+            if (header) header.classList.add('scrolled');
         } else {
-            header?.classList.remove('scrolled');
+            if (header) header.classList.remove('scrolled');
         }
     });
 
-    // Form with validation and localStorage
-    const form = document.getElementById('bookingForm');
+    var form = document.getElementById('bookingForm');
     
-    // Load saved data
-    const savedName = localStorage.getItem('bookingName');
-    const savedPhone = localStorage.getItem('bookingPhone');
-    if (savedName) form?.querySelector('[name="name"]').value = savedName;
-    if (savedPhone) form?.querySelector('[name="phone"]').value = savedPhone;
+    var savedName = localStorage.getItem('bookingName');
+    var savedPhone = localStorage.getItem('bookingPhone');
+    if (savedName && form) form.querySelector('[name="name"]').value = savedName;
+    if (savedPhone && form) form.querySelector('[name="phone"]').value = savedPhone;
     
-    // Validation
     function validateField(field) {
-        const parent = field.parentElement;
-        const value = field.value.trim();
-        let isValid = true;
-        let message = '';
+        var parent = field.parentElement;
+        var value = field.value.trim();
+        var isValid = true;
+        var message = '';
         
         if (field.required && !value) {
             isValid = false;
             message = 'Это поле обязательно';
         } else if (field.name === 'phone' && value) {
-            const phoneRegex = /^[\d\s\-\+\(\)]{10,}$/;
+            var phoneRegex = /^[\d\s\-\+\(\)]{10,}$/;
             if (!phoneRegex.test(value)) {
                 isValid = false;
                 message = 'Введите корректный номер телефона';
@@ -326,7 +357,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         parent.classList.remove('error', 'success');
         
-        let errorEl = parent.querySelector('.error-message');
+        var errorEl = parent.querySelector('.error-message');
         if (!errorEl) {
             errorEl = document.createElement('span');
             errorEl.className = 'error-message';
@@ -344,125 +375,136 @@ document.addEventListener('DOMContentLoaded', () => {
         return isValid;
     }
     
-    form?.querySelectorAll('input, select, textarea').forEach(field => {
-        field.addEventListener('blur', () => validateField(field));
-        field.addEventListener('input', () => {
-            if (field.parentElement.classList.contains('error')) {
-                validateField(field);
-            }
-        });
-    });
-    
-    form?.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        
-        // Validate all fields
-        let isFormValid = true;
-        form.querySelectorAll('input[required], select[required]').forEach(field => {
-            if (!validateField(field)) isFormValid = false;
-        });
-        
-        if (!isFormValid) {
-            showToast('Пожалуйста, заполните все поля правильно', 'error');
-            return;
+    if (form) {
+        var formFields = form.querySelectorAll('input, select, textarea');
+        for (var i = 0; i < formFields.length; i++) {
+            formFields[i].addEventListener('blur', function() {
+                validateField(this);
+            });
+            formFields[i].addEventListener('input', function() {
+                if (this.parentElement.classList.contains('error')) {
+                    validateField(this);
+                }
+            });
         }
         
-        const formData = new FormData(form);
-        const data = Object.fromEntries(formData.entries());
-        
-        // Save to localStorage
-        localStorage.setItem('bookingName', data.name);
-        localStorage.setItem('bookingPhone', data.phone);
-        
-        const submitBtn = form.querySelector('button[type="submit"]');
-        const originalText = submitBtn.textContent;
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<span class="spinner"></span>Отправка...';
-        
-        try {
-            const response = await fetch('/api/bookings', {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            var isFormValid = true;
+            var requiredFields = form.querySelectorAll('input[required], select[required]');
+            for (var i = 0; i < requiredFields.length; i++) {
+                if (!validateField(requiredFields[i])) isFormValid = false;
+            }
+            
+            if (!isFormValid) {
+                showToast('Пожалуйста, заполните все поля правильно', 'error');
+                return;
+            }
+            
+            var formData = new FormData(form);
+            var data = {};
+            formData.forEach(function(value, key) {
+                data[key] = value;
+            });
+            
+            localStorage.setItem('bookingName', data.name);
+            localStorage.setItem('bookingPhone', data.phone);
+            
+            var submitBtn = form.querySelector('button[type="submit"]');
+            var originalText = submitBtn.textContent;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner"></span>Отправка...';
+            
+            fetch('/api/bookings', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(data)
+            })
+            .then(function(response) { return response.json(); })
+            .then(function(result) {
+                if (result.success) {
+                    showToast('Спасибо! Ваша заявка отправлена. Мы свяжемся с вами для согласования времени.', 'success');
+                    form.reset();
+                    form.querySelector('[name="name"]').value = data.name;
+                    form.querySelector('[name="phone"]').value = data.phone;
+                } else {
+                    showToast(result.error || 'Ошибка отправки', 'error');
+                }
+            })
+            .catch(function(error) {
+                showToast('Ошибка соединения. Попробуйте позже.', 'error');
+                console.error(error);
+            })
+            .finally(function() {
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
             });
-            
-            const result = await response.json();
-            
-            if (result.success) {
-                showToast('Спасибо! Ваша заявка отправлена. Мы свяжемся с вами для согласования времени.', 'success');
-                form.reset();
-                // Restore saved data
-                form.querySelector('[name="name"]').value = data.name;
-                form.querySelector('[name="phone"]').value = data.phone;
-            } else {
-                showToast(result.error || 'Ошибка отправки', 'error');
-            }
-        } catch (error) {
-            showToast('Ошибка соединения. Попробуйте позже.', 'error');
-            console.error(error);
-        }
-        
-        submitBtn.disabled = false;
-        submitBtn.textContent = originalText;
-    });
+        });
+    }
 
-    // FAQ Accordion
-    document.querySelectorAll('.faq-question').forEach(question => {
-        question.addEventListener('click', () => {
-            const item = question.parentElement;
-            const answer = item.querySelector('.faq-answer');
-            const isActive = item.classList.contains('active');
+    var faqQuestions = document.querySelectorAll('.faq-question');
+    for (var i = 0; i < faqQuestions.length; i++) {
+        faqQuestions[i].addEventListener('click', function() {
+            var item = this.parentElement;
+            var answer = item.querySelector('.faq-answer');
+            var isActive = item.classList.contains('active');
             
-            document.querySelectorAll('.faq-item').forEach(el => {
-                el.classList.remove('active');
-                el.querySelector('.faq-answer').style.maxHeight = null;
-            });
+            var allItems = document.querySelectorAll('.faq-item');
+            for (var j = 0; j < allItems.length; j++) {
+                allItems[j].classList.remove('active');
+                allItems[j].querySelector('.faq-answer').style.maxHeight = null;
+            }
             
             if (!isActive) {
                 item.classList.add('active');
                 answer.style.maxHeight = answer.scrollHeight + 'px';
             }
         });
-    });
+    }
     
-    document.querySelectorAll('.faq-answer').forEach(answer => {
-        answer.style.transition = 'max-height 0.4s ease, padding 0.4s ease';
-    });
+    var faqAnswers = document.querySelectorAll('.faq-answer');
+    for (var i = 0; i < faqAnswers.length; i++) {
+        faqAnswers[i].style.transition = 'max-height 0.4s ease, padding 0.4s ease';
+    }
     
     if (localStorage.getItem('cookiesAccepted') !== 'true') {
-        document.getElementById('cookieBanner')?.classList.add('show');
+        var cookieBanner = document.getElementById('cookieBanner');
+        if (cookieBanner) cookieBanner.classList.add('show');
     }
 
-    const observerOptions = {
+    var observerOptions = {
         threshold: 0.1,
         rootMargin: '0px 0px -50px 0px'
     };
 
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
+    var observer = new IntersectionObserver(function(entries) {
+        for (var i = 0; i < entries.length; i++) {
+            if (entries[i].isIntersecting) {
+                entries[i].target.style.opacity = '1';
+                entries[i].target.style.transform = 'translateY(0)';
             }
-        });
+        }
     }, observerOptions);
 
-    document.querySelectorAll('.service-card, .portfolio-item, .review-card, .certificate-card, .faq-item, .about-grid, .contacts-grid, .section-title').forEach(el => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(40px)';
-        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        observer.observe(el);
-    });
+    var animateElements = document.querySelectorAll('.service-card, .portfolio-item, .review-card, .certificate-card, .faq-item, .about-grid, .contacts-grid, .section-title');
+    for (var i = 0; i < animateElements.length; i++) {
+        animateElements[i].style.opacity = '0';
+        animateElements[i].style.transform = 'translateY(40px)';
+        animateElements[i].style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(animateElements[i]);
+    }
 
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
+    var anchors = document.querySelectorAll('a[href^="#"]');
+    for (var i = 0; i < anchors.length; i++) {
+        anchors[i].addEventListener('click', function(e) {
             e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
+            var target = document.querySelector(this.getAttribute('href'));
             if (target) {
-                const headerHeight = header?.offsetHeight || 0;
-                const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+                var headerHeight = header ? header.offsetHeight : 0;
+                var targetPosition = target.getBoundingClientRect().top + window.pageYOffset - headerHeight;
                 
                 window.scrollTo({
                     top: targetPosition,
@@ -470,11 +512,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             }
         });
-    });
+    }
     
-    const scrollTopBtn = document.getElementById('scrollTop');
+    var scrollTopBtn = document.getElementById('scrollTop');
     if (scrollTopBtn) {
-        window.addEventListener('scroll', () => {
+        window.addEventListener('scroll', function() {
             if (window.pageYOffset > 300) {
                 scrollTopBtn.classList.add('visible');
             } else {
@@ -482,7 +524,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
         
-        scrollTopBtn.addEventListener('click', (e) => {
+        scrollTopBtn.addEventListener('click', function(e) {
             e.preventDefault();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });

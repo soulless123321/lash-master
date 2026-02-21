@@ -1,21 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Loader
+    // Hide loader immediately
     const loader = document.getElementById('loader');
-    
-    function hideLoader() {
-        if (loader && !loader.classList.contains('hidden')) {
-            loader.classList.add('hidden');
-        }
-    }
-    
-    // Hide loader after max 2 seconds in any case
-    setTimeout(hideLoader, 2000);
-    
-    // Also try to hide on load event
-    if (document.readyState === 'complete') {
-        setTimeout(hideLoader, 500);
-    } else {
-        window.addEventListener('load', () => setTimeout(hideLoader, 500));
+    if (loader) {
+        setTimeout(() => loader.style.display = 'none', 100);
     }
     
     // Particles
